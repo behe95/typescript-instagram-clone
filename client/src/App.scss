@@ -1,0 +1,169 @@
+@import "./constants/_variables";
+
+
+*{
+  padding:0;
+  margin:0;
+}
+h1,h2,h3,h4,h5,h6,p,a{
+  margin: 0px;
+}
+body,html{
+  height:100%;
+  // height: 12000px;
+}
+html{
+  scroll-behavior: smooth;
+}
+
+#appRoot{
+  min-height: 100vh;  
+
+  // START COMPNENT
+  #start__component{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px 50px 0px;
+    .top
+      {
+        select
+          {
+              border: 0px;
+              width: 100px;
+              display: block;
+              margin: auto;
+          }
+        select:focus
+          {
+              box-shadow: none;
+          }
+      }
+
+      .mid
+        {
+          margin-top: -110px;
+          .instagram__logo__text__image
+            {
+              width: $instagramLogoTextWidth;
+              display: block;
+              margin: auto;
+            }
+          .text__description
+            {
+              font-size: $smallFont;
+              color: $grey;
+              text-align: center;
+              margin-bottom: 15px;
+            }
+          .google__play__button__image
+            {
+              width: 150px;
+              display: block;
+              margin: auto;
+              margin-bottom: 30px;
+            }
+          .auth__links
+            {
+              display: flex;
+              justify-content: center;
+
+              p
+                {
+                  margin: 0px 5px;
+                }
+
+              .link
+                {
+                  color: $secondary;
+                  font-weight: $boldFontWeight;
+                }
+            }
+        }
+
+      .bottom
+        {
+          text-align: center;
+          .copyright
+            {
+              margin-bottom: 10px;
+              p
+                {
+                  font-size: $smallFont;
+                  font-weight: $boldFontWeight;
+                  color: $grey;
+                }
+              h6
+                {
+                  line-height: 20px;
+                }
+            }
+          .footer
+            {
+              background-color: $light;
+              width: 100vw;
+              color: $grey;
+              padding: 20px 0px;
+              font-size: $smallFont;
+              line-height: $lineHeight+5px;
+              margin-top: 20px;
+              .top
+                {
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: stretch;
+                  text-align: center;
+                  justify-content: center;
+                  .footer__content
+                    {
+                      margin: 0px 10px;
+                    }
+                }
+              .bottom
+                {
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: stretch;
+                  text-align: center;
+                  justify-content: center;
+                  .footer__content
+                    {
+                      margin: 0px 10px;
+                    }
+                }
+            }
+        }
+  }
+
+//=========== START COMPONENT
+
+}
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  
+}

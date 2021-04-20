@@ -1,0 +1,155 @@
+@import "../constants/_variables";
+
+
+
+#signup__component{
+    background-color: $light;
+    padding: 10px 70px 0px;
+    .signup__component__header{
+        .instagram__logo__text__image{
+            width: $instagramLogoTextWidth;
+            display: block;
+            margin: auto;
+        }
+
+        .text__description{
+            text-align: center;
+            color: $grey;
+            font-weight: $boldFontWeight;
+            margin-bottom: 20px;
+        }
+
+        .facebook__button{
+            width: 100%;
+            background-color: $secondary;
+            font-weight: $boldFontWeight;
+        }
+
+        .or{
+            margin: 20px 0px;
+            display: flex;
+            align-items: center;
+            p{
+                margin: 0px 15px;
+                color: $grey;
+                font-size: $smallFont;
+            }
+            div{
+                border-top: 1px solid $lightGrey;
+                width: 50%;
+            }
+        }
+    }
+
+    .signup__form{
+        input{
+            margin-bottom: 5px;
+            background-color: $light;
+            font-size: $smallFont;
+            border-color: $lightGrey;
+        }
+    }
+
+    .bottom{
+        .login__button{
+            width: 100%;
+            font-weight: $boldFontWeight;
+            background-color: $secondary;
+        }
+
+        p{
+            margin-top: 20px;
+            font-size: $smallFont;
+            text-align: center;
+            line-height: $lineHeight;
+            color: $grey;
+
+            span{
+                font-weight: $boldFontWeight;
+            }
+        }
+    }
+
+    .store__icon__holder{
+        .login__text{
+            margin-top: 50px;
+            text-align: center;
+            font-size: $smallFont;
+            span{
+                color: $secondary;
+            }
+        }
+
+        .get__the__app__text{
+            margin-top: 40px;
+            text-align: center;
+            font-size: $smallFont;
+            margin-bottom: 10px;
+        }
+
+        .store__icon__images{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            img{
+                width: 130px;
+            }
+        }
+    }
+
+
+    .footer{
+        font-size: $smallFont;
+        color: $grey;
+        padding-bottom: 40px;
+        .top
+        {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            text-align: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            .footer__content
+            {
+                margin: 0px 3px;
+            }
+        }
+
+        .bottom{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .form-group{
+                margin: 0px;
+            }
+
+            select
+            {
+                border: 0px;
+                width: 90px;
+                display: block;
+                margin: auto;
+                background-color: $light;
+            }
+            select:focus
+            {
+                box-shadow: none;
+            }
+
+            p{
+                font-size: 12px;
+                margin: 0px;
+            }
+        }
+    }
+}
+
+@media (min-width: 600px) {
+    #signup__component{
+        width: 400px;
+        display: block;
+        margin: auto;
+    }
+}

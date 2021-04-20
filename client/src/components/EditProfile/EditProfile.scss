@@ -1,0 +1,170 @@
+@import "../../constants/__variables";
+
+h1,h2,h3,h4,h5,h6,p,a{
+    margin: 0px;
+}
+
+#edit__profile__component{
+    height: 100vh;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    padding: 50px 0px;
+    .edit__profile__component__header{
+        display: flex;
+        // justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $lightGrey;
+        padding: 0px 15px;
+        background-color: $white;
+        height: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        p.edit__profile__component__title{
+            font-weight: $boldFontWeight;
+            margin: auto;
+        }
+
+        button{
+            height: fit-content;
+            background: none;
+            border: 0px;
+        }
+
+        button.gender__select__done__button{
+            color: $secondary;
+            padding: 10px 0px 10px 10px;
+            font-weight: $boldFontWeight;
+        }
+    }
+
+    .edit__profile__component__form{
+        margin-top: 25px;
+        padding: 0px 20px;
+        .edit__profile__component__form__photo{
+            display: flex;
+            align-items: center;
+            .left{
+                img{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 100%;
+                }
+            }
+
+            .right{
+                margin-left: 25px;
+                .username{
+                    font-size: $largeFont;
+                    font-weight: $thinFontWeight;
+                    color: $grey;
+                }
+                .change__photo{
+                    font-weight: 700;
+                    color: $secondary;
+                    font-size: $smallFont;
+                }
+            }
+        }
+
+        .user__info{
+            margin-top: 20px;
+            .user__info__form{
+                .form-group{
+                    margin: 18px 0px;
+                    button.gender__button{
+                        text-align: left;
+                        display: block;
+                        width: 100%;
+                        height: calc(1.5em + .75rem + 2px);
+                        padding: .375rem .75rem;
+                        font-size: 1rem;
+                        font-weight: 400;
+                        line-height: 1.5;
+                        color: #495057;
+                        background-color: #fff;
+                        background-clip: padding-box;
+                        border: 1px solid #ced4da;
+                        border-radius: .25rem;
+                    }
+                    label{
+                        font-weight: $boldFontWeight;
+                        color: $dark;
+                        font-size: $largeFont;
+                    }                    
+                }
+
+                div{
+                    p{
+                        color: $grey;
+                        line-height: 18px;
+                        font-size: $smallFont;
+                        font-weight: normal;
+                    }
+
+                    span.learn__more{
+                        margin-left: 5px;
+                        color: $secondary;
+                        font-weight: $boldFontWeight;
+                    }
+
+                    p.personal__information{
+                        font-weight: $boldFontWeight;
+                        font-size: $mediumFont;
+                        margin-bottom: 3px;
+                    }
+                }
+
+                .similar__account__suggestion{
+                    p{
+                        color: $dark;
+                        font-weight: $boldFontWeight;
+                        font-size: $largeFont;
+                    }
+                    div{
+                        display: flex;
+                        align-items: center;
+                        label{
+                            margin-left: 10px;
+                            font-size: $mediumFont;
+                            width: 80%;
+                            span{
+                                color: $secondary;
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+                }
+
+                .submit__section{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    p{
+                        font-weight: $boldFontWeight;
+                        color: $secondary;
+                        font-weight: $mediumFont;
+                    }
+                }
+            }
+        }
+    }
+
+    .edit__profile__component__gender__form{
+        padding: 20px 20px;
+        label{
+            font-weight: $boldFontWeight;
+            color: $dark;
+        }
+    }
+}
+
+
+@media (min-width: 600px) {
+    #edit__profile__component{
+        margin: auto;
+        width: 500px;
+    }
+}

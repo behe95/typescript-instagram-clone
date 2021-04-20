@@ -1,0 +1,166 @@
+@import "../../constants/__variables";
+
+#home__component{
+
+    #home__header__component{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $lightGrey;
+        padding: 0px 15px;
+        background-color: $white;
+        .instagram__logo__text{
+            width: 100px;
+        }
+
+        button{
+            height: fit-content;
+            background: none;
+            border: 0px;
+        }
+    }
+
+    #home__stories__component{
+        display: flex;
+        // justify-content: space-around;
+        align-items: center;
+        background-color: $light;
+        padding: 15px 5px;
+        border-bottom: 1px solid $lightGrey;
+        scroll-behavior: smooth;
+        overflow-x: scroll;
+        .story{
+            width: 60px;
+            height: fit-content;
+            text-align: center;
+            margin: 0px 10px;
+            img{
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 100%;
+            }
+            p{
+                font-size: $smallFont;
+                overflow-x: hidden;
+            }
+        }
+    }
+
+
+    //FEED CONTAINER AND FEED ITEM
+
+    #home__feed__container{
+        scroll-behavior: smooth;
+        overflow-y: scroll;
+    }
+
+    .home__feed__item{
+        padding-bottom: 10px;
+        .header{
+            padding: 12px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .left{
+                display: flex;
+                width: fit-content;
+                align-items: center;
+                img{
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 100%;
+                    margin-right: 10px;
+                }
+                p{
+                    font-weight: $boldFontWeight;
+                }
+            }
+        }
+
+        .body{
+            img{
+                width: 100%;
+            }
+        }
+
+        .actions{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            .left{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .item{
+                    margin-right: 15px;
+                }
+            }
+        }
+
+        .description{
+            padding: 0px 12px;
+            .top{
+                font-size: $smallFont;
+                font-weight: $boldFontWeight;
+            }
+            .bottom{
+                p{
+                    font-weight: $boldFontWeight;
+                    font-size: $smallFont;
+                    span{
+                        font-weight: $thinFontWeight;
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+
+        .comments{
+            padding: 0px 12px;
+            font-size: $smallFont;
+            .top{
+                color: $grey;
+            }
+            .bottom{
+                .comment{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    p{
+                        font-weight: $boldFontWeight;
+                        span{
+                            font-weight: $thinFontWeight;
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        .footer{
+            padding: 0px 12px;
+            color: $grey;
+            margin-top: 10px;
+            p{
+                font-size: 10px;
+            }
+        }
+    }
+}
+
+
+@media (min-width: 600px) {
+    #home__component{
+        #home__stories__component{
+            width: 600px;
+            margin: auto;
+        }
+        #home__feed__container{
+            width: 600px;
+            display: block;
+            margin: auto;
+        }
+    }
+}

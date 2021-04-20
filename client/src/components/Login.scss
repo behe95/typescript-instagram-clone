@@ -1,0 +1,68 @@
+@import "../constants/_variables";
+
+.login__component{
+    width: 100%;
+    
+
+    .facebook__button{
+     width: 100%;   
+     font-weight: $boldFontWeight;
+     box-shadow: none;
+     outline: none;
+    }
+
+    .or{
+        margin: 20px 0px;
+        display: flex;
+        align-items: center;
+        p{
+            margin: 0px 15px;
+            color: $grey;
+            font-size: $smallFont;
+        }
+        div{
+            border-top: 1px solid $lightGrey;
+            width: 50%;
+        }
+    }
+
+    .login__button{
+        width: 100%;
+        margin: 20px 0px;
+        font-weight: $boldFontWeight;
+        box-shadow: none;
+    }
+
+    .login__form{
+        input{
+            background-color: $light;
+            margin-bottom: 5px;
+            font-size: $smallFont;            
+        };        
+    }
+
+    .bottom{
+        .forgot__pass__link{
+            color: $secondary;
+            font-weight: $boldFontWeight;
+            font-size: $smallFont;
+            text-align: right;
+            display: block;
+        }
+        p{
+            color: $grey;
+            font-size: $smallFont;
+        }
+        span{
+            color: $secondary;
+            font-weight: $boldFontWeight;
+        }
+    }
+}
+
+
+@media (min-width: 600px) {
+    .login__component{
+        width: 340px;
+    }
+}

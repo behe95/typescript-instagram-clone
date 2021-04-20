@@ -1,0 +1,33 @@
+import React from "react";
+import Actions from "./Actions";
+import UserInfo from "./UserInfo";
+import axios from "axios";
+
+import { useAuth } from "../../contexts/Auth.context";
+import Header from "./Header";
+
+export default function UserInfoAndActions() {
+    const [info, setInfo] = React.useState({});
+
+    const {setIsAuthenticated} = useAuth();
+
+    React.useEffect(() => {
+        axios
+            .get('api/profile/info', {withCredentials:true})
+            .then(res => {
+                console.log(res);     
+                setInfo({...res.data})           
+            }).catch(err => {
+                if(err.response.status === 401) setIsAuthenticated(false);             
+            })
+    },[setIsAuthenticated])
+    return (
+        <>
+            <Header info={info} />
+            <UserInfo
+            info={info}
+            />
+            <Actions />
+        </>
+    )
+}

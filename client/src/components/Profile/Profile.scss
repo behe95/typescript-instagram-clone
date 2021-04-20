@@ -1,0 +1,167 @@
+@import "../../constants/__variables";
+
+
+#profile__component{
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    .profile__header__component{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $lightGrey;
+        padding: 0px 15px;
+        background-color: $white;
+        height: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        p{
+            font-weight: $boldFontWeight;
+            
+        }
+
+        button{
+            height: fit-content;
+            background: none;
+            border: 0px;
+        }
+    }
+
+    .profile__user__info__component{
+        margin-top: 50px;
+        .top{
+            display: flex;
+            .left{
+                flex-grow: 1;
+                display: flex;
+                // justify-content: center;
+                padding: 15px 0px;
+                padding-left: 20px;
+                img{
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 100%;
+                    // display: block;
+                    // margin: auto;
+                }
+            }
+
+            .right{
+                flex-grow: 3;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-right: 20px;
+                p.username{
+                    font-size: 32px;
+                    font-weight: 100;
+                }
+
+                button{
+                    font-weight: $boldFontWeight;
+                    background-color: $white;
+                    border-color: $lightGrey;
+                }
+            }
+            
+        }
+
+        .bottom{
+            padding: 0px 20px;
+            margin-bottom: 20px;
+            p.username{
+                font-size: 18px;
+                font-weight: $boldFontWeight;
+            }
+
+            p.description{
+            }
+        }
+    }
+
+    .profile__actions__component{
+        width: 100%;
+        border-bottom: 2px solid $lightGrey;
+        .top{
+            .list-group{
+                justify-content: center;
+                align-items: center;
+                border-top: 1px solid $lightGrey;
+                border-bottom: 1px solid $lightGrey;
+                .list-group-item{
+                    border: 0px;
+                    flex-basis: 33%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    p.number{
+                        font-weight: $boldFontWeight;
+                    }
+
+                    p.title{
+                        font-weight: 400;
+                        color: $grey;
+                    }
+                }
+            }
+        }
+
+        .bottom{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 50px;
+        }
+    }
+
+
+    .profile__posts__container{
+        .profile__post{            
+            height: 33vw;
+            //  border-bottom: 4px solid $white;
+            margin-bottom: 4px;
+            img{
+                width: inherit;
+                height: inherit;
+                object-fit: cover;
+            }
+        }
+
+        .profile__post.rightBottomBorder{
+            // border-bottom: 4px solid $white;
+        }
+
+        .profile__post.allsideBorder{
+            border-left: 4px solid $white;
+            border-right: 4px solid $white;
+            border-bottom: 4px solid $white;
+        }
+
+        .profile__post.leftBottomBorder{
+            border-right: 0px;
+        }
+
+        .profile__post.removeTopBorder{
+            border-top: 0px;
+        }
+    }
+}
+
+
+// @media (min-width: 600px) {
+//     #profile__component{
+//         #home__stories__component{
+//             width: 600px;
+//             margin: auto;
+//         }
+//         #home__feed__container{
+//             width: 600px;
+//             display: block;
+//             margin: auto;
+//         }
+//     }
+// }
