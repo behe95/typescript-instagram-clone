@@ -1,6 +1,9 @@
 @import "../constants/__variables";
 
 #search__component{
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
     .header{
         border-bottom: 1px solid $lightGrey;
         height: 50px;

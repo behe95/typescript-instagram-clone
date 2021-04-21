@@ -1,6 +1,9 @@
 @import "../../constants/__variables";
 
 #home__component{
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
 
     #home__header__component{
         display: flex;
