@@ -9,7 +9,7 @@ export default function UserInfo({info}:any) {
 
             <div className="top">
                 <div className="left">
-                <img src="/static/images/portrait/portrait1.jfif" alt="portrait1"/>
+                <img src={info && info.profilePhoto && `${info.profilePhoto.url}`} alt="portrait1"/>
                 </div>
 
                 <div onClick={() => history.push('/accounts/edit')} className="right">

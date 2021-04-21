@@ -8,6 +8,10 @@ interface userInfoType{
     username: string;
     registeredUsing: string;
     fullName: string;
+    profilePhoto: {
+        url: string,
+        fileName?: string
+    }
 }
 
 interface InitContextProps {
@@ -31,8 +35,10 @@ export const useAuth = () => {
 
 export const AuthProvider = ({children}:any) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(() => Cookie.get('JWT__AUTH__TOKEN') ? true : false);
-    const [userInfo, setUserInfo] = React.useState({} as userInfoType);
+    const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
     
+    
+
     const isMounted = React.useRef(true);
 
     const history = useHistory();
@@ -46,7 +52,12 @@ export const AuthProvider = ({children}:any) => {
             axios
                 .get('/api/home',{withCredentials: true})
                 .then(res => {
-                    setUserInfo(userInfo => ({...userInfo,...res.data}));                
+                    setUserInfo(userInfo => { 
+                        if(res.data.profilePhoto && res.data.profilePhoto.url){
+                            return ({...userInfo,...res.data});                            
+                        }
+                        return ({...userInfo,...res.data, profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}})
+                    });                
                 }).catch(err => {
                     console.log(err);                    
                 })

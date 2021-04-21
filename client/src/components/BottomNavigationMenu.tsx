@@ -2,9 +2,13 @@ import React from "react";
 import "./BottomNavigationMenu.scss";
 
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../contexts/Auth.context";
 
 function BottomNavigationMenu() {
     const history = useHistory();
+
+    const {userInfo: info} = useAuth();
+    
     return (
         <div id="bottom__navigation__menu__component">
             
@@ -36,7 +40,7 @@ function BottomNavigationMenu() {
 
             <div className="item profile" onClick={() => history.push("/user.one")}>
                 <p>
-                <img className="profile__image" src="/static/images/portrait/portrait1.jfif" alt="profile__image"/>
+                <img className="profile__image" src={info && info.profilePhoto && `${info.profilePhoto.url}`} alt="profile__image"/>
                 </p>
             </div>
 

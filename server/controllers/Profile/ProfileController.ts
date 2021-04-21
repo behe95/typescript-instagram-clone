@@ -3,8 +3,13 @@ import {request, Request, Response, Router} from "express";
 import path from "path";
 import Controller from "../../interfaces/controller.interface";
 import authMiddleware from "../../middlewares/auth.middleware";
+import fs from "fs";
 
+import multer from "multer";
 import settings from "../../settings";
+import multerMiddleware from "../../middlewares/multer.middleware";
+import uploadImageToStorage from "../../utils/UploadFile";
+import deleteImageFromStorage from "../../utils/DeleteFile";
 
 
 class ProfileController implements Controller {
@@ -16,8 +21,12 @@ class ProfileController implements Controller {
     }
 
     private initializeRoutes(){
+        
+        
+
         this.router.get(`${this.path}/info`,authMiddleware,this.profleInfoController);
         this.router.post(`${this.path}/edit`, authMiddleware, this.profileEditController);
+        this.router.post(`${this.path}/changeProfilePhoto`, authMiddleware, multerMiddleware(), this.profilePhotoChangeController);
     }
     
     private profleInfoController = async (request: Request, response: Response) => {
@@ -83,6 +92,50 @@ class ProfileController implements Controller {
          console.log(error);
             
         }
+    }
+
+
+    private profilePhotoChangeController = async (request: Request, respone: Response) => {
+        
+
+        
+        console.log("FIRESTORE =======================", request.file);
+        const firestore = request.firestore;
+        
+        const bucket = request.storage.bucket(process.env.CLOUD__STORAGE__BUCKET__NAME);
+        const file = request.file;
+
+        const userId = request.user._id;
+
+        const userRef = firestore.collection('users').doc(userId);
+
+        uploadImageToStorage(file, bucket).then(async (uploadedImageInfo:any) => {
+            const userDoc = await userRef.get();
+            const userData = userDoc.data();
+            if(userData.profilePhoto && userData.profilePhoto.url && userData.profilePhoto.fileName){
+                deleteImageFromStorage(bucket, userData.profilePhoto.fileName);                
+            }
+            await userRef.update({
+                profilePhoto:{
+                    ...uploadedImageInfo
+                }
+            })
+
+            respone.status(200).send({
+                status: 200,
+                message: "Profile photo changed successfully",
+                data: {
+                    profilePhoto:{
+                        ...uploadedImageInfo
+                    }
+                }
+            })
+        }).catch(err => {
+            console.log(err);
+            
+        })
+        
+        
     }
 }
 

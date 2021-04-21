@@ -6,6 +6,8 @@ declare global {
         interface Request {
             firebase: any,
             firestore: any,
+            storage: any,
+            file: any,
             user: requestWithUser
         }
 

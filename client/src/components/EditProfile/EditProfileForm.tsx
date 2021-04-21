@@ -12,6 +12,10 @@ interface formValuesType{
     phone: string;
     gender: string;
     isSuggestSimilarAccount: boolean;
+    profilePhoto?:{
+        url: string,
+        fileName?: string
+    }
 }
 
 interface actionType{
@@ -29,6 +33,9 @@ export default function EditProfileForm(props:EditProfileFormProps){
 
     const history = useHistory();
     const {setUserInfo} = useAuth();
+    // const [prfilePhotoFile, setProfilePhotoFile] = React.useState("");
+
+    const profileChangeInputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     
     const {setShowGenderForm, dispatch, formValues} = props;
 
@@ -52,16 +59,41 @@ export default function EditProfileForm(props:EditProfileFormProps){
             })
     }
 
+    const onClickProfilePhotoChangeHandler = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
+        e.preventDefault();
+
+        profileChangeInputRef.current.click();        
+    }
+
+    const onChangeProfilePhotoInputRef = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const formData = new FormData();
+        formData.append('file',e.target.files![0])
+        console.log(formData);
+        
+        axios
+            .post('/api/profile/changeProfilePhoto',formData,{withCredentials:true,headers: {
+                "Contetnt-Type":"multipart/form-data" 
+            }})
+            .then(res => {
+                console.log(res);
+                setUserInfo(userInfo => ({...userInfo,...res.data.data}))
+                if(res.status === 200) history.goBack();              
+            }).catch(err => {
+                console.log(err.response);                
+            })
+    }
+
     return (
         <div className="edit__profile__component__form">
 
             <div className="edit__profile__component__form__photo">
                 <div className="left">
-                    <img src="/static/images/portrait/portrait1.jfif" alt="portrait"/>
+                    <img src={formValues && formValues.profilePhoto && `${formValues.profilePhoto.url}`} alt="portrait"/>
                 </div>
                 <div className="right">
                     <p className="username">User name</p>
-                    <p className="change__photo">Change Profile Photo</p>
+                    <p onClick={(e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => onClickProfilePhotoChangeHandler(e)} className="change__photo">Change Profile Photo</p>
+                    <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => onChangeProfilePhotoInputRef(e)} ref={profileChangeInputRef} type="file" className="d-none"/>
                 </div>
             </div>
 

@@ -16,6 +16,7 @@ dotenv.config();
 class App {
     public app: Application;
     public firestore;
+    public storage;
     
 
     constructor(controllers: Controller[]){
@@ -32,6 +33,7 @@ class App {
         this.initializeErrorHandler();
 
         this.firestore = admin.firestore();
+        this.storage = admin.storage();
     }
 
     public listen(){
@@ -57,6 +59,7 @@ class App {
 
         this.app.use((request:Request,respone:Response,next:NextFunction) => {
             request.firestore = this.firestore;
+            request.storage = this.storage;
             next();
         })
 
