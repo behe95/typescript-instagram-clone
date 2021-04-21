@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 interface HeaderProps{
     setShowGenderForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -6,8 +7,10 @@ interface HeaderProps{
 }
 
 export default function Header(props:HeaderProps){
+    const history = useHistory();
     const onClickGoBackHandler = () => {
-        if(props.for === 'gender__form') props.setShowGenderForm(showGenderForm => !showGenderForm);
+        if(props.for === 'gender__form') return props.setShowGenderForm(showGenderForm => !showGenderForm);
+        history.goBack();
     }
     return (
         <div className="edit__profile__component__header">
@@ -24,7 +27,7 @@ export default function Header(props:HeaderProps){
             
             {
                 props.for === "gender__form" ? 
-                <button className="gender__select__done__button">
+                <button onClick={onClickGoBackHandler} className="gender__select__done__button">
                 Done
                 </button>
                 : null

@@ -16,10 +16,10 @@ export default async function authMiddleware (request: Request, respone: Respons
             
             console.log(verificationResponse);
             
-            const username = verificationResponse.username;
+            const _id = verificationResponse._id;
             const firestore = request.firestore;
 
-            userSnapshots = await firestore.collection('users').where('username', '==', username).get();
+            userSnapshots = await firestore.collection('users').where('_id', '==', _id).get();
 
 
             if(userSnapshots.docs.length > 0){

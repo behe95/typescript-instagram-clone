@@ -4,6 +4,7 @@ import "./EditProfile.scss";
 import EditProfileForm from "./EditProfileForm";
 import GenderForm from "./GenderForm";
 import Header from "./Header";
+import useForm from "./useForm";
 
 export default function EditProfile(){
     const [showGenderForm, setShowGenderForm] = React.useState(false);
@@ -14,6 +15,9 @@ export default function EditProfile(){
         setHeaderFor("");
     },[showGenderForm])
 
+    const [formValues, dispatch] = useForm();
+
+
     return (
         <div id="edit__profile__component">
             <Header
@@ -23,9 +27,13 @@ export default function EditProfile(){
             {
                 showGenderForm ? 
                 <GenderForm
+                formValues={formValues}
+                dispatch={dispatch}
                 />
                 :
                 <EditProfileForm
+                formValues={formValues}
+                dispatch={dispatch}
                 setShowGenderForm={setShowGenderForm}
                 />
             }

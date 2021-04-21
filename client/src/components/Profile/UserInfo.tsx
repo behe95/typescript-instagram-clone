@@ -1,7 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 
 export default function UserInfo({info}:any) {
+    const history = useHistory();
     return (
         <div className="profile__user__info__component">
 
@@ -10,7 +12,7 @@ export default function UserInfo({info}:any) {
                 <img src="/static/images/portrait/portrait1.jfif" alt="portrait1"/>
                 </div>
 
-                <div className="right">
+                <div onClick={() => history.push('/accounts/edit')} className="right">
                     <p className="username">{info.username}</p>
                     <button className="btn btn-light btn-sm">Edit Profile</button>
                 </div>
@@ -18,7 +20,7 @@ export default function UserInfo({info}:any) {
 
             <div className="bottom">
                 <p className="username">{info.fullName}</p>
-                <p className="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis voluptatem ut error magnam vel voluptatum labore velit, facilis.</p>
+                <p className="description">{info.bio}</p>
             </div>
 
         </div>

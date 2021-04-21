@@ -30,7 +30,7 @@ function App() {
           <AuthRoute exact path="/:userId" component={Profile} />
           <Route exact path="/accounts/emailsignup" component={Signup} />
           <Route exact path="/accounts/password/reset" component={ForgotPassword} />
-          <Route exact path="/accounts/edit" component={EditProfile} />
+          <AuthRoute exact path="/accounts/edit" component={EditProfile} />
         </Switch>
       </AuthProvider>
       </BrowserRouter>

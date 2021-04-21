@@ -1,4 +1,4 @@
-import {Request, Response, Router} from "express";
+import {request, Request, Response, Router} from "express";
 
 import path from "path";
 import Controller from "../../interfaces/controller.interface";
@@ -17,6 +17,7 @@ class ProfileController implements Controller {
 
     private initializeRoutes(){
         this.router.get(`${this.path}/info`,authMiddleware,this.profleInfoController);
+        this.router.post(`${this.path}/edit`, authMiddleware, this.profileEditController);
     }
     
     private profleInfoController = async (request: Request, response: Response) => {
@@ -30,6 +31,56 @@ class ProfileController implements Controller {
             
             response.status(200).send({...userData});
         } catch (error) {
+            
+        }
+    }
+
+
+    private profileEditController = async (request: Request, response: Response) => {
+        const firestore = request.firestore;
+
+        const incomingInfo = request.body;
+        const userId = request.user._id
+        
+        try {
+            const userRef = firestore.collection('users').doc(userId);
+            const userSnapshot = await userRef.get();
+
+            const userData = userSnapshot.data();
+            
+            if(incomingInfo.email === userData.email || incomingInfo.username === userData.username){
+                await userRef.update({
+                    ...incomingInfo
+                })
+            }else{
+                let userSnapshots;
+                if(incomingInfo.email !== userData.email){
+                    userSnapshots = await firestore.collection('users').where('email', '==', incomingInfo.email).get();
+                }else if(incomingInfo.username !== userData.email){
+                    userSnapshots = await firestore.collection('users').where('username', '==', incomingInfo.username).get();
+                }else{
+                    userSnapshots = await firestore.collection('users').where('username','==',incomingInfo.username).where('email', '==', incomingInfo.email).get();
+                }
+
+                if(userSnapshots && userSnapshots.docs.length > 0){
+                    return response.status(409).send({
+                        status: 409,
+                        message: "User already exists"
+                    })
+                }else{
+                    await userRef.update({
+                        ...incomingInfo
+                    })
+                }
+            }
+
+            response.status(200).send({
+                status: 200,
+                message: "User info updated successfully"
+            })
+            
+        } catch (error) {
+         console.log(error);
             
         }
     }

@@ -3,6 +3,13 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
 
+interface userInfoType{
+    user: string;
+    username: string;
+    registeredUsing: string;
+    fullName: string;
+}
+
 interface InitContextProps {
     isAuthenticated: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>,
@@ -11,6 +18,8 @@ interface InitContextProps {
         password: string,
         loginUsing: string
     }) => void;
+    setUserInfo: React.Dispatch<React.SetStateAction<userInfoType>>;
+    userInfo: userInfoType;
 }
 
 const AuthContext = React.createContext({} as InitContextProps);
@@ -22,6 +31,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({children}:any) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(() => Cookie.get('JWT__AUTH__TOKEN') ? true : false);
+    const [userInfo, setUserInfo] = React.useState({} as userInfoType);
     
     const isMounted = React.useRef(true);
 
@@ -30,11 +40,23 @@ export const AuthProvider = ({children}:any) => {
     React.useEffect(() => {
         const JWT__AUTH__TOKEN = Cookie.get('JWT__AUTH__TOKEN');
         if(JWT__AUTH__TOKEN) setIsAuthenticated(b => true);
+        console.log(isAuthenticated);
+        
+        if(isMounted.current && isAuthenticated){
+            axios
+                .get('/api/home',{withCredentials: true})
+                .then(res => {
+                    setUserInfo(userInfo => ({...userInfo,...res.data}));                
+                }).catch(err => {
+                    console.log(err);                    
+                })
+        }
+
         return () => {
             isMounted.current = false;
         }
-    },[])
-    console.log(isAuthenticated);
+    },[isAuthenticated])
+    console.log(userInfo);
     
     const login = async ({...data}) => {
         if(isMounted.current){
@@ -67,7 +89,9 @@ export const AuthProvider = ({children}:any) => {
     const value = {
         isAuthenticated,
         setIsAuthenticated,
-        login
+        login,
+        userInfo,
+        setUserInfo
     };
 
     return (

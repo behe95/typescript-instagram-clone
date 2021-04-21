@@ -86,11 +86,24 @@ export default function Signup() {
 
         if(!validateNumber(user) && !validateEmail(user)) return;
 
-        if(validateNumber(user)) setData({...data, registeredUsing: 'phone'});
-        if(validateEmail(user)) setData({...data, registeredUsing: 'email'});
+        // if(validateNumber(user)) setData({...data, registeredUsing: 'phone'});
+        // if(validateEmail(user)) setData({...data, registeredUsing: 'email'});
 
-        axios
-            .post('api/auth/register',{...data, registeredUsing: data.registeredUsing})
+        // axios
+        //     .post('api/auth/register',{...data, registeredUsing: data.registeredUsing})
+        //     .then(res => {
+        //         console.log(res);
+                
+        //     }).catch(err => {
+        //         // const {data} = err.response;
+        //         // console.log(data);
+        //         console.log(err);
+        //     })
+
+
+        if(validateNumber(user)){
+            axios
+            .post('/api/auth/register',{...data, registeredUsing: "phone"})
             .then(res => {
                 console.log(res);
                 
@@ -98,9 +111,22 @@ export default function Signup() {
                 // const {data} = err.response;
                 // console.log(data);
                 console.log(err);
-                
-                
             })
+        }else if(validateEmail(user)){
+            axios
+            .post('/api/auth/register',{...data, registeredUsing: "email"})
+            .then(res => {
+                console.log(res);
+                
+            }).catch(err => {
+                // const {data} = err.response;
+                // console.log(data);
+                console.log(err);
+            })
+        }
+
+
+
         // history.push("/",{from: history.location.pathname})
     }
     
