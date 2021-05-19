@@ -3,7 +3,9 @@ Heroku Demo URL: https://tscript-insta.herokuapp.com/
 
 Typescript
 NodeJS
+REST api
 ReactJs
 React-Redux
-MongoDB
-REST api
+Firebase Cloud Storage
+Firestore Database
+
