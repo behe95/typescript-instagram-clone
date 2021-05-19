@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
+import * as API from '../api'
 
 interface userInfoType{
     user: string;
@@ -16,6 +17,7 @@ interface userInfoType{
 
 interface InitContextProps {
     isAuthenticated: boolean;
+    authContextIsLoading: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>,
     login: ({...data}:{
         user: string,
@@ -34,6 +36,7 @@ export const useAuth = () => {
 
 
 export const AuthProvider = ({children}:any) => {
+    const [authContextIsLoading, setAuthContextIsLoading] = React.useState(false);
     const [isAuthenticated, setIsAuthenticated] = React.useState(() => Cookie.get('JWT__AUTH__TOKEN') ? true : false);
     const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
     
@@ -72,7 +75,7 @@ export const AuthProvider = ({children}:any) => {
     const login = async ({...data}) => {
         if(isMounted.current){
             axios
-            .post('api/auth/login',{...data})
+            .post(API.LOGIN,{...data})
             .then(res => {
                 
 
@@ -102,7 +105,8 @@ export const AuthProvider = ({children}:any) => {
         setIsAuthenticated,
         login,
         userInfo,
-        setUserInfo
+        setUserInfo,
+        authContextIsLoading,
     };
 
     return (

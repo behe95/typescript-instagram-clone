@@ -1,0 +1,34 @@
+@import "../../constants/__variables";
+
+#share__photo__component{
+    height: 100vh;
+    .share__photo__header{
+        padding: 0px 15px;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .back__btn{
+            background: none;
+            border: 0px;
+        }
+
+        .close__btn__svg{
+
+        }
+
+        p{
+            font-weight: $boldFontWeight;
+            color: $dark;
+        }
+
+        .next__btn{
+            background: none;
+            border: 0px;
+            // padding-right: 10px;
+            font-weight: $boldFontWeight;
+            color: $secondary;
+        }
+    }
+}

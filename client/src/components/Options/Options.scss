@@ -1,0 +1,119 @@
+@import "../../constants/__variables";
+
+
+#options__component{
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    background-color: #efefef;
+
+    .options__header__component{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $lightGrey;
+        padding: 0px 15px;
+        background-color: $white;
+        height: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        p{
+            font-weight: $boldFontWeight;
+            margin: auto;
+        }
+
+        button{
+            height: fit-content;
+            background: none;
+            border: 0px;
+        }
+    }
+
+    #options__component__list__container{
+        margin-top: 50px;
+        .options__component__list__header{
+            border-bottom: 1px solid #ccc;
+            height: 60px;
+            display: flex;
+            align-items: flex-end;
+            padding-left: 15px;
+            padding-bottom: 5px;
+            p{
+                color: $grey;
+                font-weight: $boldFontWeight;
+                font-size: $largeFont;
+            }
+        }
+        ul.options__component__list{
+            list-style: none;
+            li.options__component__list__item{
+                height: 60px;
+                border-bottom: 1px solid #ccc;
+                padding: 15px;
+                font-size: $largeFont;
+                display: flex;
+                align-items: center;
+                color: $dark;
+                background-color: #fff;
+
+                button{
+                    background: none;
+                    border: 0;
+                    margin-left: auto;
+                }
+            }
+        }
+        ul.options__component__list.account__list{
+            margin-bottom: 0px;
+        }
+        ul.options__component__list.settings__list{
+            margin-bottom: 0px;
+        }
+        ul.options__component__list.logout__list{
+            li{
+                p{
+                    color: $danger;
+                }
+            }
+            margin-bottom: 100px;
+        }
+        .options__component__social__icons__container{
+            background-color: #fff;
+            padding: 0px 15px;
+
+            p.link{
+                color: $secondary;
+                font-size: $largeFont;
+                font-weight: $boldFontWeight;
+                padding: 15px 0px;
+            }
+
+            p.text{
+                color: $grey;
+                font-size: $smallFont;
+                line-height: $smallFont;
+                padding-bottom: 30px;
+            }
+            div.options__component__social__icons{
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+
+// @media (min-width: 600px) {
+//     #profile__component{
+//         #home__stories__component{
+//             width: 600px;
+//             margin: auto;
+//         }
+//         #home__feed__container{
+//             width: 600px;
+//             display: block;
+//             margin: auto;
+//         }
+//     }
+// }

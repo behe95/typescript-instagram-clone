@@ -1,0 +1,43 @@
+@import "../../constants/__variables";
+
+#edit__photo__component{
+    height: 100vh;
+    .edit__photo__header{
+        padding: 0px 15px;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .close__btn{
+            background: none;
+            border: 0px;
+        }
+
+        .close__btn__svg{
+
+        }
+
+        p{
+            font-weight: $boldFontWeight;
+            color: $dark;
+        }
+
+        .next__btn{
+            background: none;
+            border: 0px;
+            // padding-right: 10px;
+            font-weight: $boldFontWeight;
+            color: $secondary;
+        }
+    }
+
+    div#canvas__holder{
+        width: 100%;
+        height: 60%;
+        canvas{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

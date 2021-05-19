@@ -1,12 +1,15 @@
 import React from "react";
 import Actions from "./Actions";
 import UserInfo from "./UserInfo";
-import axios from "axios";
 
 import { useAuth } from "../../contexts/Auth.context";
 import Header from "./Header";
 
-export default function UserInfoAndActions() {
+export default function UserInfoAndActions({setShowOptions}: 
+        {
+            setShowOptions: React.Dispatch<React.SetStateAction<boolean>>
+        }
+    ) {
     const [info, setInfo] = React.useState({});
 
     const {setIsAuthenticated, userInfo} = useAuth();
@@ -25,7 +28,9 @@ export default function UserInfoAndActions() {
     },[setIsAuthenticated, userInfo])
     return (
         <>
-            <Header info={info} />
+            <Header 
+            setShowOptions={setShowOptions}
+            info={info} />
             <UserInfo
             info={info}
             />

@@ -28,7 +28,7 @@ class App {
         
         this.initializeFirebaseAdminSDK();
         this.initializeMiddlewares();
-        this.connectToTheDatabase();
+        // this.connectToTheDatabase();
         this.initializeControllers(controllers);
         this.initializeErrorHandler();
 

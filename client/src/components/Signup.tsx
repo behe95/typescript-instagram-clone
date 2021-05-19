@@ -6,6 +6,8 @@ import axios from "axios";
 
 import { validateEmail, validateNumber } from "../utils/formValidators";
 
+import * as API from '../api'
+
 const footerContentsTop = [
     {title: "About"},
     {title: "Blog"},
@@ -103,7 +105,7 @@ export default function Signup() {
 
         if(validateNumber(user)){
             axios
-            .post('/api/auth/register',{...data, registeredUsing: "phone"})
+            .post(API.REGISTER,{...data, registeredUsing: "phone"})
             .then(res => {
                 console.log(res);
                 
@@ -114,7 +116,7 @@ export default function Signup() {
             })
         }else if(validateEmail(user)){
             axios
-            .post('/api/auth/register',{...data, registeredUsing: "email"})
+            .post(API.REGISTER,{...data, registeredUsing: "email"})
             .then(res => {
                 console.log(res);
                 
