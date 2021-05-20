@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { clearPhotoUpload } from "../store/actions/upload";
 
 
-export default function Header(){
+export default React.memo(function Header(){
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -38,4 +38,4 @@ export default function Header(){
             </button>
         </div>
     )
-}
+})
