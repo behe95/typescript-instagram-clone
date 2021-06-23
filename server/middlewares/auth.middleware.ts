@@ -9,7 +9,8 @@ import dataStoredInToken from "../interfaces/dataStoredInToken.interface";
 
 const whiteListedRoutes: string[] = [
     "/api/auth/login",
-    "/api/auth/register"
+    "/api/auth/register",
+    "/favicon.ico"
 ]
 
 export default async function authMiddleware(request:Request, response: Response, next: NextFunction) { 
