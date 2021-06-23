@@ -28,7 +28,7 @@ export default class AuthController implements Controller {
         const firestore = request.firestore;
 
         const {user,username} = data;
-        // console.log(data);
+        console.log(data);
         
         try {
             const userSnapshots = await firestore.collection('users').where('user', '==', user).get();
