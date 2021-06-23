@@ -22,7 +22,7 @@ export default async function authMiddleware(request:Request, response: Response
     const {JWT__AUTH__TOKEN,JWT__REFRESH__TOKEN} = request.cookies;
     
 
-    if(!JWT__AUTH__TOKEN || !JWT__REFRESH__TOKEN) return next(new AuthenticationTokenMissingException());
+    // if(!JWT__AUTH__TOKEN || !JWT__REFRESH__TOKEN) return next(new AuthenticationTokenMissingException());
 
     try {
         const decodedAccessToken = await verifyAccessToken(JWT__AUTH__TOKEN);
