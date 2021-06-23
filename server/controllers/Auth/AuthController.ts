@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import HttpException from "../../exceptions/HttpException";
@@ -7,6 +7,7 @@ import Controller from "../../interfaces/controller.interface";
 import validationMiddleware from "../../middlewares/validation.middleware";
 import RegisterUserDto from "./register.dto";
 import LoginUserDto from "./login.dto";
+import { createAccessToken, createRefreshToken } from "../../helpers/createToken";
 
 export default class AuthController implements Controller {
     public path = "/api/auth";
@@ -18,6 +19,7 @@ export default class AuthController implements Controller {
     private initializeRoutes = () => {
         this.router.post(`${this.path}/register`, validationMiddleware(RegisterUserDto, false), this.registerController);
         this.router.post(`${this.path}/login`, validationMiddleware(LoginUserDto, false), this.loginController);
+        this.router.get(`${this.path}/check`, this.checkAuthController);
     }
 
     private registerController = async (request: Request, response: Response) => {
@@ -25,7 +27,7 @@ export default class AuthController implements Controller {
         const firestore = request.firestore;
 
         const {user,username} = data;
-        console.log(data);
+        // console.log(data);
         
         try {
             const userSnapshots = await firestore.collection('users').where('user', '==', user).get();
@@ -68,6 +70,7 @@ export default class AuthController implements Controller {
 
 
     private loginController = async (request: Request, response: Response) => {
+            
         const data = request.body;
         const firestore = request.firestore;
 
@@ -105,12 +108,11 @@ export default class AuthController implements Controller {
                             username
                         };
     
-                        const authToken = jwt.sign(payload, process.env.JWT__AUTH__TOKEN__SECRET!, {
-                            algorithm: 'HS256',
-                            expiresIn: '3600s'
-                        });
+                        const authToken = createAccessToken(payload);
     
-                        const refreshToken = jwt.sign(payload, process.env.JWT__REFRESH__TOKEN__SECRET!,{algorithm:'HS256'});
+                        const refreshToken = createRefreshToken(payload);
+
+                        
 
                         await request.firestore.collection('users').doc(userSnapshots.docs[0].id).update({refreshToken});
 
@@ -151,5 +153,13 @@ export default class AuthController implements Controller {
         }
 
         
+    }
+
+    async checkAuthController(req: Request, res: Response, next: NextFunction){  
+              
+        res.status(200).send({
+            message: 'Authenticated',
+            status: 200
+        })
     }
 }

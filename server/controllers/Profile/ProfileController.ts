@@ -2,7 +2,6 @@ import {request, Request, Response, Router} from "express";
 
 import path from "path";
 import Controller from "../../interfaces/controller.interface";
-import authMiddleware from "../../middlewares/auth.middleware";
 import fs from "fs";
 
 import multer from "multer";
@@ -24,9 +23,9 @@ class ProfileController implements Controller {
         
         
 
-        this.router.get(`${this.path}/info`,authMiddleware,this.profleInfoController);
-        this.router.post(`${this.path}/edit`, authMiddleware, this.profileEditController);
-        this.router.post(`${this.path}/changeProfilePhoto`, authMiddleware, multerMiddleware(), this.profilePhotoChangeController);
+        this.router.get(`${this.path}/info`,this.profleInfoController);
+        this.router.post(`${this.path}/edit`,  this.profileEditController);
+        this.router.post(`${this.path}/changeProfilePhoto`,  multerMiddleware(), this.profilePhotoChangeController);
     }
     
     private profleInfoController = async (request: Request, response: Response) => {

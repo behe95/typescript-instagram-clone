@@ -1,45 +1,62 @@
 import {NextFunction, Response, Request, response} from 'express';
 import jwt from "jsonwebtoken";
 import AuthenticationTokenMissingException from "../exceptions/AuthenticationTokenMissingException";
+import HttpException from '../exceptions/HttpException';
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
+import { createRefreshToken } from '../helpers/createToken';
+import { verifyAccessToken, verifyRefreshToken } from '../helpers/verifyToken';
 import dataStoredInToken from "../interfaces/dataStoredInToken.interface";
 
-export default async function authMiddleware (request: Request, respone: Response, next: NextFunction){
-    const cookies = request.cookies;
+const whiteListedRoutes: string[] = [
+    "/api/auth/login",
+    "/api/auth/register"
+]
 
-    if(cookies && cookies.JWT__AUTH__TOKEN){
-        const JWT__AUTH__TOKEN__SECRET = process.env.JWT__AUTH__TOKEN__SECRET;
-        let userSnapshots;
+export default async function authMiddleware(request:Request, response: Response, next: NextFunction) {    
+    if(whiteListedRoutes.includes(request.path)) return next();
+    
+    const {JWT__AUTH__TOKEN,JWT__REFRESH__TOKEN} = request.cookies;
 
-        try {
-            const verificationResponse = jwt.verify(cookies.JWT__AUTH__TOKEN, JWT__AUTH__TOKEN__SECRET!) as dataStoredInToken;
-            
-            console.log(verificationResponse);
-            
-            const _id = verificationResponse._id;
-            const firestore = request.firestore;
+    if(!JWT__AUTH__TOKEN || !JWT__REFRESH__TOKEN) return next(new AuthenticationTokenMissingException());
 
-            userSnapshots = await firestore.collection('users').where('_id', '==', _id).get();
+    try {
+        const decodedAccessToken = await verifyAccessToken(JWT__AUTH__TOKEN);
+        if(decodedAccessToken) return next();        
+    } catch (error) {}
+
+    try {
+        const decodedRefreshToken = await verifyRefreshToken(JWT__REFRESH__TOKEN);
+        if(!decodedRefreshToken) throw new Error("");
+
+        const firestore = request.firestore;
+
+        const {_id, username} = decodedRefreshToken as {_id: string, username: string, iat: number};
+
+        const userSnapshots = await firestore.collection('users').doc(_id).get();
+
+        const user = userSnapshots.data();
+
+        const {refreshToken: refreshTokenSaved} = user;
+
+        if(!refreshTokenSaved) throw new Error("");
+
+        if(!refreshTokenSaved === JWT__REFRESH__TOKEN) throw new Error("");
+        
+        const authToken = createRefreshToken({_id, username});
+
+        response.cookie('JWT__AUTH__TOKEN',`${authToken}`,{
+            httpOnly: false,
+            secure: false,
+        });
 
 
-            if(userSnapshots.docs.length > 0){
-                request.user = userSnapshots.docs[0].data();
-                next();
-            }else{
-                console.log("WrongAuthenticationTokenException =========================== 1");
-                
-                next(new WrongAuthenticationTokenException());
-            }
-
-
-        } catch (error) {
-            console.log("WrongAuthenticationTokenException =========================== 2", error);
-            next(new WrongAuthenticationTokenException());
-        }
-
-    }else{
-        console.log("AuthenticationTokenMissingException =========================== 1");
-
-        next(new AuthenticationTokenMissingException());
+        return next();
+        
+        
+    } catch (error) {
+        return next(new WrongAuthenticationTokenException());
     }
+    
+
+    
 }

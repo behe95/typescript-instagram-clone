@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 
 import path from "path";
 import Controller from "../../interfaces/controller.interface";
-import authMiddleware from "../../middlewares/auth.middleware";
 
 import settings from "../../settings";
 
@@ -16,7 +15,7 @@ class HomeController implements Controller {
     }
 
     private initializeRoutes(){
-        this.router.get(this.path,authMiddleware,this.homeController);
+        this.router.get(this.path,this.homeController);
     }
     
     private homeController = async (request: Request, response: Response) => {

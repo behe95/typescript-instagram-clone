@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import * as admin from "firebase-admin";
 
 import errorMiddleware from "./middlewares/error.middleware";
+import authMiddleware from "./middlewares/auth.middleware";
 
 dotenv.config();
 
@@ -57,11 +58,14 @@ class App {
         // this.app.use(cors(corsOptions));
         this.app.use(cors());
 
+
         this.app.use((request:Request,respone:Response,next:NextFunction) => {
             request.firestore = this.firestore;
             request.storage = this.storage;
             next();
         })
+
+        this.app.use(authMiddleware);
 
         
         this.app.use(express.static(path.resolve(settings.PROJECT_DIR,'client/build')));

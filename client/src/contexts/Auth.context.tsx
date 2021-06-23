@@ -34,10 +34,22 @@ export const useAuth = () => {
     return React.useContext(AuthContext);
 }
 
+const checkAuth = async () => {
+    console.log("HELLO");
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.get('/api/auth/check',{withCredentials: true});
+            return resolve(true);         
+        } catch (error) {
+            return reject(false);
+        }
+    })
+}
+
 
 export const AuthProvider = ({children}:any) => {
-    const [authContextIsLoading, setAuthContextIsLoading] = React.useState(false);
-    const [isAuthenticated, setIsAuthenticated] = React.useState(() => Cookie.get('JWT__AUTH__TOKEN') ? true : false);
+    const [authContextIsLoading, setAuthContextIsLoading] = React.useState(true);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
     
     
@@ -47,9 +59,25 @@ export const AuthProvider = ({children}:any) => {
     const history = useHistory();
 
     React.useEffect(() => {
-        const JWT__AUTH__TOKEN = Cookie.get('JWT__AUTH__TOKEN');
-        if(JWT__AUTH__TOKEN) setIsAuthenticated(b => true);
-        console.log(isAuthenticated);
+
+        (
+            async function () {
+                
+                try {
+
+                    const res = await checkAuth();
+                    
+                    if (res) {
+                        setIsAuthenticated(true);
+                        setAuthContextIsLoading(false);
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                    setAuthContextIsLoading(false);
+                }
+            }
+        )()
         
         if(isMounted.current && isAuthenticated){
             axios
@@ -66,11 +94,12 @@ export const AuthProvider = ({children}:any) => {
                 })
         }
 
+        
+
         return () => {
             isMounted.current = false;
         }
-    },[isAuthenticated])
-    console.log(userInfo);
+    },[])
     
     const login = async ({...data}) => {
         if(isMounted.current){

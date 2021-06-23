@@ -15,22 +15,24 @@ export default function AuthRoute({component: Component, ...rest}:RouteProps){
     console.log("ISAUTHENTINCATED ==================================== ", isAuthenticated);
     
     console.log("LOADING ================================ ",authContextIsLoading);
+
+    if(authContextIsLoading && !isAuthenticated) {
+        return (
+            <LoaderComponent />
+        )
+    }
     
     return (
-        <>
-            {
-                authContextIsLoading ?
-                <LoaderComponent /> :
-                <Route
-                    {...rest}
-                    render={props => (
-                        isAuthenticated ? 
-                        <Component {...props} />
-                        :
-                        <Redirect to="/" />
-                    )}
-                />
-            }
+        <>           
+        <Route
+            {...rest}
+            render={props => (
+                isAuthenticated ? 
+                <Component {...props} />
+                :
+                <Redirect to="/" />
+            )}
+        />
         </>
     )
     
