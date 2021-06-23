@@ -35,7 +35,6 @@ function App() {
         <Root>
         <BrowserRouter>
         <AuthProvider>
-        <Switch>
             <Route exact path="/" component={Start} />
             <AuthRoute exact path="/home" component={Home} />
             <AuthRoute exact path="/explore" component={Search} />
@@ -46,7 +45,6 @@ function App() {
             <AuthRoute exact path="/create/style" component={EditPhotoIndex} />
             <AuthRoute exact path="/create/details" component={SharePhotoIndex} />
             <Route exact path="*" component={PageNotFound} />
-          </Switch>
         </AuthProvider>
         </BrowserRouter>
         

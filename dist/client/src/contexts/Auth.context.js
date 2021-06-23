@@ -124,6 +124,10 @@ var AuthProvider = function (_a) {
     var isMounted = react_1.default.useRef(true);
     var history = react_router_dom_1.useHistory();
     react_1.default.useEffect(function () {
+        if (!js_cookie_1.default.get('JWT__AUTH__TOKEN') || !js_cookie_1.default.get("JWT__REFRESH__TOKEN")) {
+            setAuthContextIsLoading(false);
+            return;
+        }
         (function () {
             return __awaiter(this, void 0, void 0, function () {
                 var res, error_2;

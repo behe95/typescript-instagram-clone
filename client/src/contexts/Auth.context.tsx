@@ -62,6 +62,11 @@ export const AuthProvider = ({children}:any) => {
 
     React.useEffect(() => {
 
+        if(!Cookie.get('JWT__AUTH__TOKEN') || !Cookie.get("JWT__REFRESH__TOKEN")){
+            setAuthContextIsLoading(false);
+            return
+        }
+
         (
             async function () {
                 
