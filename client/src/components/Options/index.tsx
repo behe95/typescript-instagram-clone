@@ -5,6 +5,7 @@ import { logoutUser } from '../../store/actions/auth';
 import Header from './Header'
 import './Options.scss'
 import socialSvg from './svg'
+import {useSnackbar} from 'notistack';
 
 const accountData = ["Edit Profile", "Nametag", "Change Password", "Privacy and Security", "Login Activity", "Emails from Instagram"];
 
@@ -18,6 +19,8 @@ export default function Options({setShowOptions}: {
 
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const {enqueueSnackbar} = useSnackbar();
 
     return (
         <div id="options__component">
@@ -87,6 +90,7 @@ export default function Options({setShowOptions}: {
                         <li className="options__component__list__item">
                         <p onClick={async () => {
                             await dispatch(logoutUser())
+                            enqueueSnackbar('User logged out successfully',{variant: 'success'});
                             history.push('/')                            
                         }}>Log Out</p>
                         <button onClick={() => {}}>

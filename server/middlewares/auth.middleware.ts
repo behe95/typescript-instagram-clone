@@ -12,7 +12,9 @@ const whiteListedRoutes: string[] = [
     "/api/auth/register"
 ]
 
-export default async function authMiddleware(request:Request, response: Response, next: NextFunction) {    
+export default async function authMiddleware(request:Request, response: Response, next: NextFunction) { 
+    console.log(request.path);
+       
     
     if(whiteListedRoutes.includes(request.path)) return next();
     

@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
 import * as API from '../api'
+import {useSnackbar} from 'notistack';
 
 interface userInfoType{
     user: string;
@@ -51,6 +52,7 @@ export const AuthProvider = ({children}:any) => {
     const [authContextIsLoading, setAuthContextIsLoading] = React.useState(true);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     
     
 
@@ -112,7 +114,7 @@ export const AuthProvider = ({children}:any) => {
                 localStorage.setItem("JWT__REFRESH__TOKEN", Cookie.get('JWT__REFRESH__TOKEN')!);
                 
                 setIsAuthenticated(b => true);
-
+                enqueueSnackbar('User logged in successfully',{variant: 'success'});
                 
                 history.push('/home');
 
@@ -121,7 +123,13 @@ export const AuthProvider = ({children}:any) => {
             }).catch(err => {
                 // const {data} = err.response;
                 // console.log(data);
-                console.log(err);
+                
+                if(err.response){
+                    enqueueSnackbar(err.response?.data?.message, {variant: 'error'});
+                }else{
+                    enqueueSnackbar(err.message, {variant: 'error'});
+
+                }
                 
                 
             })

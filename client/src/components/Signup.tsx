@@ -5,6 +5,7 @@ import "./Signup.scss";
 import axios from "axios";
 
 import { validateEmail, validateNumber } from "../utils/formValidators";
+import {useSnackbar} from 'notistack';
 
 import * as API from '../api'
 
@@ -46,6 +47,8 @@ export default function Signup() {
     const [isValid,setIsValid] = React.useState<boolean>(false);
 
     const isMounted = React.useRef(true);
+
+    const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
 
@@ -107,23 +110,35 @@ export default function Signup() {
             axios
             .post(API.REGISTER,{...data, registeredUsing: "phone"})
             .then(res => {
-                console.log(res);
+                enqueueSnackbar("User registration completed", {variant: 'success'});
                 
             }).catch(err => {
                 // const {data} = err.response;
                 // console.log(data);
-                console.log(err);
+                if(err.response){
+                    enqueueSnackbar(err.response?.data?.message, {variant: 'error'});
+                }else{
+                    enqueueSnackbar(err.message, {variant: 'error'});
+
+                }
             })
         }else if(validateEmail(user)){
             axios
             .post(API.REGISTER,{...data, registeredUsing: "email"})
             .then(res => {
-                console.log(res);
+                
+                enqueueSnackbar("User registration completed", {variant: 'success'});
+
                 
             }).catch(err => {
                 // const {data} = err.response;
                 // console.log(data);
-                console.log(err);
+                if(err.response){
+                    enqueueSnackbar(err.response?.data?.message, {variant: 'error'});
+                }else{
+                    enqueueSnackbar(err.message, {variant: 'error'});
+
+                }
             })
         }
 

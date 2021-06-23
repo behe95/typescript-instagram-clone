@@ -51,6 +51,11 @@ export default class AuthController implements Controller {
                                 password: hash,
                                 _id: docRef.id
                             });
+
+                            return response.status(200).send({
+                                status: 200,
+                                message: "User registration completed"
+                            })
                         } catch (error) {
                             return (new HttpException(500, 'Something went wrong'))
                         }
