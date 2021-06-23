@@ -3,16 +3,18 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import upload from "./upload";
+import auth from "./auth";
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['upload']
+    whitelist: ['upload', 'auth']
 };
 
 
 const reducers = combineReducers({
-    upload
+    upload,
+    auth
 });
 
 

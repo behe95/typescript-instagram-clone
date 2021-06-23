@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { clearPhotoUpload } from "../store/actions/upload";
+import { clearPhotoUpload } from "../../store/actions/upload";
 
 
 export default React.memo(function Header(){

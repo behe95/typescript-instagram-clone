@@ -20,6 +20,7 @@ export default class AuthController implements Controller {
         this.router.post(`${this.path}/register`, validationMiddleware(RegisterUserDto, false), this.registerController);
         this.router.post(`${this.path}/login`, validationMiddleware(LoginUserDto, false), this.loginController);
         this.router.get(`${this.path}/check`, this.checkAuthController);
+        this.router.get(`${this.path}/logout`, this.logoutController);
     }
 
     private registerController = async (request: Request, response: Response) => {
@@ -156,10 +157,31 @@ export default class AuthController implements Controller {
     }
 
     async checkAuthController(req: Request, res: Response, next: NextFunction){  
+        console.log("==============================");
+        
               
         res.status(200).send({
             message: 'Authenticated',
             status: 200
         })
+    }
+
+    async logoutController(req:Request, res: Response, next: NextFunction) {
+        res.clearCookie("JWT__AUTH__TOKEN");
+        res.clearCookie("JWT__REFRESH__TOKEN");
+        const {_id} = req.user;
+
+        const firestore = req.firestore;
+        await firestore.collection('users').doc(_id).update({
+            refreshToken: ""
+        });
+    
+
+
+        return res.status(200).send({
+            status: 200,
+            message: "User logged out"
+        })
+        
     }
 }

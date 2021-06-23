@@ -4,7 +4,7 @@ import "./BottomNavigationMenu.scss";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth.context";
 import { useDispatch } from "react-redux";
-import { photoUpload } from "./store/actions/upload";
+import { photoUpload } from "../store/actions/upload";
 
 function BottomNavigationMenu() {
     const history = useHistory();

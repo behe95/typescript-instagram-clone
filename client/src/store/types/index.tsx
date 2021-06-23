@@ -1,2 +1,4 @@
+export const LOGOUT = "LOGOUT";
+
 export const SELECT__UPLOAD__PHOTO = "SELECT__UPLOAD__PHOTO";
 export const CLEAR__SELECT__UPLOAD__PHOTO = "CLEAR__SELECT__UPLOAD__PHOTO";

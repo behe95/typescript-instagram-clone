@@ -62,6 +62,7 @@ class App {
         this.app.use((request:Request,respone:Response,next:NextFunction) => {
             request.firestore = this.firestore;
             request.storage = this.storage;
+            request.user = {_id: "", user: ""}
             next();
         })
 
