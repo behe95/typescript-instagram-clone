@@ -24,7 +24,7 @@ interface InitContextProps {
         user: string,
         password: string,
         loginUsing: string
-    }) => void;
+    }) => Promise<void>;
     setUserInfo: React.Dispatch<React.SetStateAction<userInfoType>>;
     userInfo: userInfoType;
 }

@@ -31,6 +31,8 @@ export default function Login() {
 
     const {login} = useAuth();
 
+    const [isLoginLoading,setIsLoginLoading] = React.useState(false);
+
 
     React.useEffect(() => {
 
@@ -73,6 +75,7 @@ export default function Login() {
 
         // await login({...data, loginUsing:data.loginUsing});
 
+        setIsLoginLoading(true);
 
         
         if(!validateNumber(user) && !validateEmail(user)){
@@ -83,11 +86,13 @@ export default function Login() {
             await login({...data, loginUsing:"email"});
         }
       
-
         
         
         
     }
+
+    console.log("LOADING ====================== ", isLoginLoading);
+    
 
     const onclickLoginWithFacebook = () => {
         console.log("FACEBOOK LOGIN BUTTON CLICKED");
@@ -136,7 +141,14 @@ export default function Login() {
                 onClick={() => onclickLogin()}
                 className={`btn btn-primary btn-sm ${!isValid ? 'disabled' : ''} login__button`}
                 >
-                    Log In
+                    {
+                        isLoginLoading ? 
+                        <div className="spinner-grow spinner-grow-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        :
+                        "Log In"                    
+                    }
                 </button>
 
                 <p>Don't have an account? <span

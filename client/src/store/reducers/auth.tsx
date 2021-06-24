@@ -5,7 +5,6 @@ let initialState = {
 }
 
 export default function auth(state=initialState, action:any){
-    console.log("AUTH REDUCERS");
     
     
     

@@ -50,6 +50,9 @@ export default function Signup() {
 
     const {enqueueSnackbar} = useSnackbar();
 
+    const [isLoginLoading,setIsLoginLoading] = React.useState(false);
+
+
     useEffect(() => {
 
         let key:keyof dataInterFace;
@@ -89,7 +92,10 @@ export default function Signup() {
         console.log(validateEmail(user),validateNumber(user));
         
 
-        if(!validateNumber(user) && !validateEmail(user)) return;
+        // if(!validateNumber(user) && !validateEmail(user)) return;
+
+        if(!validateNumber(user)) return enqueueSnackbar("Input valid phone number", {variant: 'error'});
+        if(!validateEmail(user)) return enqueueSnackbar("Input valid email", {variant: 'error'});
 
         // if(validateNumber(user)) setData({...data, registeredUsing: 'phone'});
         // if(validateEmail(user)) setData({...data, registeredUsing: 'email'});
@@ -105,11 +111,14 @@ export default function Signup() {
         //         console.log(err);
         //     })
 
+        setIsLoginLoading(true);
 
         if(validateNumber(user)){
             axios
             .post(API.REGISTER,{...data, registeredUsing: "phone"})
             .then(res => {
+                setIsLoginLoading(false);
+
                 enqueueSnackbar("User registration completed", {variant: 'success'});
                 
             }).catch(err => {
@@ -126,7 +135,7 @@ export default function Signup() {
             axios
             .post(API.REGISTER,{...data, registeredUsing: "email"})
             .then(res => {
-                
+                setIsLoginLoading(false);
                 enqueueSnackbar("User registration completed", {variant: 'success'});
 
                 
@@ -212,7 +221,14 @@ export default function Signup() {
                     onClick={() => onclickSignup()}
                     className={`btn btn-primary btn-sm ${!isValid ? 'disabled' : ''} login__button`}
                     >
-                        Sign up
+                    {
+                        isLoginLoading ? 
+                        <div className="spinner-grow spinner-grow-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        :
+                        "Sign Up"                    
+                    }
                     </button>
 
                     <p>By signing up, you agree to our
