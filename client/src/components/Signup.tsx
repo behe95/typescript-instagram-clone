@@ -92,10 +92,9 @@ export default function Signup() {
         console.log(validateEmail(user),validateNumber(user));
         
 
-        // if(!validateNumber(user) && !validateEmail(user)) return;
+        if(!validateNumber(user) && !validateEmail(user)) return enqueueSnackbar("Input valid phone number or email address", {variant: 'error'});
 
-        if(!validateNumber(user)) return enqueueSnackbar("Input valid phone number", {variant: 'error'});
-        if(!validateEmail(user)) return enqueueSnackbar("Input valid email", {variant: 'error'});
+   
 
         // if(validateNumber(user)) setData({...data, registeredUsing: 'phone'});
         // if(validateEmail(user)) setData({...data, registeredUsing: 'email'});
