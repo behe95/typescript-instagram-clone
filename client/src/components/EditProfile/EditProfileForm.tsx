@@ -1,7 +1,11 @@
 import axios from "axios";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/Auth.context";
+import { changeProfilePhoto, editProfileInfo } from "../../store/actions/auth";
+import {useSnackbar} from 'notistack';
+import { RootState } from "../../store/reducers";
 
 interface formValuesType{
     fullName: string;
@@ -32,31 +36,43 @@ interface EditProfileFormProps{
 export default function EditProfileForm(props:EditProfileFormProps){
 
     const history = useHistory();
-    const {setUserInfo} = useAuth();
+    // const {setUserInfo} = useAuth();
     // const [prfilePhotoFile, setProfilePhotoFile] = React.useState("");
 
+    const dispatchAction = useDispatch();
+
+    const {enqueueSnackbar} = useSnackbar();
+
+    const {user: userProfileInfo} = useSelector((state:RootState) => state.auth);
+
+
     const profileChangeInputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
+    const [changeProfilePhotoLoading,setChangeProfilePhotoLoading] = React.useState(false);
+    const [editProfileInfoLoading, setEditProfileInfoLoading] = React.useState(false);
     
     const {setShowGenderForm, dispatch, formValues} = props;
+    
 
     const onClickGenderInput = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();  
         setShowGenderForm(showGenderForm => !showGenderForm);
     }
 
-    console.log("RENDERING EDITPROFILE",formValues);
-    const onSubmitHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    // console.log("RENDERING EDITPROFILE",formValues);
+    const onSubmitHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+        setEditProfileInfoLoading(true);
+        try {
+            await dispatchAction(editProfileInfo(formValues))
+            enqueueSnackbar("Profile updated", {variant: 'success'});            
+        } catch (error) {
+            console.log("USER PROFILE EDIT ===================== ",error);
+            
+        }
 
-        axios
-            .post('/api/profile/edit',{...formValues},{withCredentials: true})
-            .then(res => {
-                setUserInfo(userInfo => ({...userInfo,...formValues}))
-                if(res.status === 200) history.goBack();
-                
-            }).catch(err => {
-                console.log(err);                
-            })
+        setEditProfileInfoLoading(false);
+        
     }
 
     const onClickProfilePhotoChangeHandler = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
@@ -65,34 +81,48 @@ export default function EditProfileForm(props:EditProfileFormProps){
         profileChangeInputRef.current.click();        
     }
 
-    const onChangeProfilePhotoInputRef = (e:React.ChangeEvent<HTMLInputElement>) => {
+    
+
+    const onChangeProfilePhotoInputRef = async (e:React.ChangeEvent<HTMLInputElement>) => {
         const formData = new FormData();
         formData.append('file',e.target.files![0])
-        console.log(formData);
-        
-        axios
-            .post('/api/profile/changeProfilePhoto',formData,{withCredentials:true,headers: {
-                "Contetnt-Type":"multipart/form-data" 
-            }})
-            .then(res => {
-                console.log(res);
-                setUserInfo(userInfo => ({...userInfo,...res.data.data}))
-                if(res.status === 200) history.goBack();              
-            }).catch(err => {
-                console.log(err.response);                
-            })
+        // console.log(formData);
+        setChangeProfilePhotoLoading(true);
+        try {            
+           await dispatchAction(changeProfilePhoto(formData));
+           
+           
+           enqueueSnackbar("Profile updated", {variant: 'success'});           
+
+        } catch (error) {
+            console.log("USER PROFILE PHOTO CHANGE ===================== ",error);
+        }
+
+        setChangeProfilePhotoLoading(false);
     }
+
+    
 
     return (
         <div className="edit__profile__component__form">
 
             <div className="edit__profile__component__form__photo">
                 <div className="left">
-                    <img src={formValues && formValues.profilePhoto && `${formValues.profilePhoto.url}`} alt="portrait"/>
+                    <img src={userProfileInfo?.profilePhoto?.url} alt="portrait"/>
                 </div>
                 <div className="right">
                     <p className="username">User name</p>
-                    <p onClick={(e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => onClickProfilePhotoChangeHandler(e)} className="change__photo">Change Profile Photo</p>
+
+                    
+                    {
+                        changeProfilePhotoLoading ? 
+                        <div className="spinner-grow spinner-grow-sm" role="status">
+                        <span className="sr-only">Loading...</span>
+                        </div>
+                        :
+                        <p style={{cursor: "pointer"}} onClick={(e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => onClickProfilePhotoChangeHandler(e)} className="change__photo">Change Profile Photo</p>
+                    }
+                    
                     <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => onChangeProfilePhotoInputRef(e)} ref={profileChangeInputRef} type="file" className="d-none"/>
                 </div>
             </div>
@@ -166,7 +196,7 @@ export default function EditProfileForm(props:EditProfileFormProps){
 
                     <div className="form-group">
                         <label htmlFor="gender">Gender</label>
-                        <button className="gender__button" onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => onClickGenderInput(e)}>Gender</button>
+                        <button className="gender__button" onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => onClickGenderInput(e)}>{formValues?.gender}</button>
                     </div>
 
                     <div className="similar__account__suggestion">
@@ -184,9 +214,16 @@ export default function EditProfileForm(props:EditProfileFormProps){
                     </div>
 
                     <div className="submit__section">
-                        <button
-                        onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSubmitHandler(e)}
-                        className="btn-sm btn-primary btn">Submit</button>
+                        {
+                            editProfileInfoLoading ? 
+                            <div className="spinner-grow spinner-grow-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                            </div>
+                            :
+                            <button
+                            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSubmitHandler(e)}
+                            className="btn-sm btn-primary btn">Submit</button>
+                        }
                         <p>Temporarily disable my account</p>
                     </div>
                 </form>

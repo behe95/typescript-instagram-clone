@@ -91,7 +91,7 @@ export default function Login() {
         
     }
 
-    console.log("LOADING ====================== ", isLoginLoading);
+    // console.log("LOADING ====================== ", isLoginLoading);
     
 
     const onclickLoginWithFacebook = () => {

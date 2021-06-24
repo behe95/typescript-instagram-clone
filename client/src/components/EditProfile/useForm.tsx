@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useAuth } from '../../contexts/Auth.context';
+import { RootState } from '../../store/reducers';
 import { validateEmail, validateNumber } from '../../utils/formValidators';
 
 interface initialStateTypes{
@@ -42,6 +44,8 @@ function reducer(state:any, action: actionTypes){
             }
             return {...state, [action.payload.target.name]: action.payload.target.value}
         case 'initState':
+            // console.log(action.payload);
+            
             return {...state,...action.payload};
         default:
             return state;
@@ -49,41 +53,45 @@ function reducer(state:any, action: actionTypes){
 }
 
 export default function useForm(){
-    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const {user:userProfileInfo} = useSelector((state:RootState) => state.auth);
 
-    const {userInfo} = useAuth();
+    const [state, dispatch] = React.useReducer(reducer, userProfileInfo);
 
-    React.useEffect(() => {
-        let info:initialStateTypes;
-        console.log("RENDERINGGGG");
+    // const {userInfo} = useAuth();
+
+    
+
+    // React.useEffect(() => {
+    //     let info:initialStateTypes;
+    //     // console.log("RENDERINGGGG");
         
-        if(Object.keys(userInfo).length > 5){
-            info = {
-                ...userInfo
-            }
-        }else{
-            info = {
-                username: userInfo.username,
-                fullName: userInfo.fullName
-            }
-        }
+    //     if(Object.keys(userInfo).length > 5){
+    //         info = {
+    //             ...userInfo
+    //         }
+    //     }else{
+    //         info = {
+    //             username: userInfo.username,
+    //             fullName: userInfo.fullName
+    //         }
+    //     }
         
 
-        if(validateNumber(userInfo.user)){
-            info = {
-                ...info,
-                phone: userInfo.user
-            }
-        }else if(validateEmail(userInfo.user)){
-            info = {
-                ...info,
-                email: userInfo.user
-            }
-        }
+    //     if(validateNumber(userInfo.user)){
+    //         info = {
+    //             ...info,
+    //             phone: userInfo.user
+    //         }
+    //     }else if(validateEmail(userInfo.user)){
+    //         info = {
+    //             ...info,
+    //             email: userInfo.user
+    //         }
+    //     }
 
-        dispatch({type:"initState", payload: info})
+    //     dispatch({type:"initState", payload: info})
         
-    },[userInfo])
+    // },[userInfo])
 
     return [state, dispatch];
 }

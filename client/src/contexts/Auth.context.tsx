@@ -4,6 +4,10 @@ import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
 import * as API from '../api'
 import {useSnackbar} from 'notistack';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/reducers";
+import { getProfileInfo } from "../store/actions/auth";
+
 
 interface userInfoType{
     user: string;
@@ -25,8 +29,8 @@ interface InitContextProps {
         password: string,
         loginUsing: string
     }) => Promise<void>;
-    setUserInfo: React.Dispatch<React.SetStateAction<userInfoType>>;
-    userInfo: userInfoType;
+    // setUserInfo: React.Dispatch<React.SetStateAction<userInfoType>>;
+    // userInfo: userInfoType;
 }
 
 const AuthContext = React.createContext({} as InitContextProps);
@@ -51,7 +55,7 @@ const checkAuth = async () => {
 export const AuthProvider = ({children}:any) => {
     const [authContextIsLoading, setAuthContextIsLoading] = React.useState(true);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-    const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
+    // const [userInfo, setUserInfo] = React.useState({profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}} as userInfoType);
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     
     
@@ -59,6 +63,9 @@ export const AuthProvider = ({children}:any) => {
     const isMounted = React.useRef(true);
 
     const history = useHistory();
+
+    const {user:userProfileInfo} = useSelector((state:RootState) => state.auth)
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
 
@@ -79,27 +86,35 @@ export const AuthProvider = ({children}:any) => {
                         setAuthContextIsLoading(false);
                     }
 
+                    if(!userProfileInfo){
+                        dispatch(getProfileInfo())
+                    }
+
                 } catch (error) {
                     console.log(error);
                     setAuthContextIsLoading(false);
                 }
             }
         )()
+
         
-        if(isMounted.current && isAuthenticated){
-            axios
-                .get('/api/home',{withCredentials: true})
-                .then(res => {
-                    setUserInfo(userInfo => { 
-                        if(res.data.profilePhoto && res.data.profilePhoto.url){
-                            return ({...userInfo,...res.data});                            
-                        }
-                        return ({...userInfo,...res.data, profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}})
-                    });                
-                }).catch(err => {
-                    console.log(err);                    
-                })
-        }
+
+        
+        
+        // if(isMounted.current && isAuthenticated){
+        //     axios
+        //         .get('/api/home',{withCredentials: true})
+        //         .then(res => {
+        //             setUserInfo(userInfo => { 
+        //                 if(res.data.profilePhoto && res.data.profilePhoto.url){
+        //                     return ({...userInfo,...res.data});                            
+        //                 }
+        //                 return ({...userInfo,...res.data, profilePhoto:{url: '/static/images/portrait/portrait1.jfif'}})
+        //             });                
+        //         }).catch(err => {
+        //             console.log(err);                    
+        //         })
+        // }
 
         
 
@@ -120,6 +135,8 @@ export const AuthProvider = ({children}:any) => {
                 
                 setIsAuthenticated(b => true);
                 enqueueSnackbar('User logged in successfully',{variant: 'success'});
+
+                dispatch(getProfileInfo());
                 
                 history.push('/home');
 
@@ -146,8 +163,8 @@ export const AuthProvider = ({children}:any) => {
         isAuthenticated,
         setIsAuthenticated,
         login,
-        userInfo,
-        setUserInfo,
+        // userInfo,
+        // setUserInfo,
         authContextIsLoading,
     };
 

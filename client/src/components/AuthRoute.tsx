@@ -12,9 +12,9 @@ interface RouteProps{
 
 export default function AuthRoute({component: Component, ...rest}:RouteProps){
     const {isAuthenticated, authContextIsLoading} = useAuth()
-    console.log("ISAUTHENTINCATED ==================================== ", isAuthenticated);
+    // console.log("ISAUTHENTINCATED ==================================== ", isAuthenticated);
     
-    console.log("LOADING ================================ ",authContextIsLoading);
+    // console.log("LOADING ================================ ",authContextIsLoading);
 
     if(authContextIsLoading && !isAuthenticated) {
         return (

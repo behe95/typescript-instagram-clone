@@ -3,14 +3,16 @@ import "./BottomNavigationMenu.scss";
 
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/Auth.context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { photoUpload } from "../store/actions/upload";
+import { RootState } from "../store/reducers";
 
 function BottomNavigationMenu() {
     const history = useHistory();
     const dispatch = useDispatch();
+    const {user:userProfileInfo} = useSelector((state:RootState) => state.auth);
 
-    const {userInfo: info} = useAuth();
+    // const {userInfo: info} = useAuth();
     const photoUploadInputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const onClickPhotoUploadHandler = () => {
@@ -52,9 +54,9 @@ function BottomNavigationMenu() {
             </div>
 
 
-            <div className="item profile" onClick={() => history.push("/user.one")}>
+            <div className="item profile" onClick={() => history.push(`/${userProfileInfo?.username}`)}>
                 <p>
-                <img className="profile__image" src={info && info.profilePhoto && `${info.profilePhoto.url}`} alt="profile__image"/>
+                <img className="profile__image" src={userProfileInfo?.profilePhoto?.url} alt="profile__image"/>
                 </p>
             </div>
 

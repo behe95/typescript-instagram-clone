@@ -9,17 +9,17 @@ import Stories from "./Stories";
 
 export default function Home() {
 
-    React.useEffect(() => {
-        console.log("HOME ==============");
+    // React.useEffect(() => {
+    //     console.log("HOME ==============");
         
-        axios
-            .get('api/home',{withCredentials:true})
-            .then(res => {
-                console.log(res);                
-            }).catch(err => {
-                console.log(err);                
-            })
-    },[])
+    //     axios
+    //         .get('api/home',{withCredentials:true})
+    //         .then(res => {
+    //             console.log(res);                
+    //         }).catch(err => {
+    //             console.log(err);                
+    //         })
+    // },[])
     return (
         <div id="home__component">
             <Header/>

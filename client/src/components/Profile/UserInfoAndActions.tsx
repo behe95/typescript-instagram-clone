@@ -12,20 +12,20 @@ export default function UserInfoAndActions({setShowOptions}:
     ) {
     const [info, setInfo] = React.useState({});
 
-    const {setIsAuthenticated, userInfo} = useAuth();
+    // const {setIsAuthenticated, userInfo} = useAuth();
 
-    React.useEffect(() => {
-        // axios
-        //     .get('api/profile/info', {withCredentials:true})
-        //     .then(res => {
-        //         console.log(res);     
-        //         setInfo({...res.data})           
-        //     }).catch(err => {
-        //         if(err.response.status === 401) setIsAuthenticated(false);             
-        //     })
+    // React.useEffect(() => {
+    //     // axios
+    //     //     .get('api/profile/info', {withCredentials:true})
+    //     //     .then(res => {
+    //     //         console.log(res);     
+    //     //         setInfo({...res.data})           
+    //     //     }).catch(err => {
+    //     //         if(err.response.status === 401) setIsAuthenticated(false);             
+    //     //     })
 
-        setInfo(info => ({...info,...userInfo}))
-    },[setIsAuthenticated, userInfo])
+    //     setInfo(info => ({...info,...userInfo}))
+    // },[setIsAuthenticated, userInfo])
     return (
         <>
             <Header 
