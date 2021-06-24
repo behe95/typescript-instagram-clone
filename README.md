@@ -1,5 +1,5 @@
 # typescript-instagram-clone
-Heroku Demo URL: https://tscript-insta.herokuapp.com/
+Heroku Demo URL: https://tscript-instagram.herokuapp.com/
 
 Typescript
 NodeJS
