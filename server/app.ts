@@ -66,7 +66,7 @@ class App {
             next();
         })
 
-        this.app.use(authMiddleware);
+        // this.app.use(authMiddleware);
 
         
         this.app.use(express.static(path.resolve(settings.PROJECT_DIR,'client/build')));

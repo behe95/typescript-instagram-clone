@@ -9,6 +9,7 @@ import settings from "../../settings";
 import multerMiddleware from "../../middlewares/multer.middleware";
 import uploadImageToStorage from "../../utils/UploadFile";
 import deleteImageFromStorage from "../../utils/DeleteFile";
+import authMiddleware from "../../middlewares/auth.middleware";
 
 
 class ProfileController implements Controller {
@@ -23,9 +24,9 @@ class ProfileController implements Controller {
         
         
 
-        this.router.get(`${this.path}/info`,this.profleInfoController);
-        this.router.post(`${this.path}/edit`,  this.profileEditController);
-        this.router.post(`${this.path}/changeProfilePhoto`,  multerMiddleware(), this.profilePhotoChangeController);
+        this.router.get(`${this.path}/info`, authMiddleware, this.profleInfoController);
+        this.router.post(`${this.path}/edit`, authMiddleware,   this.profileEditController);
+        this.router.post(`${this.path}/changeProfilePhoto`, authMiddleware,   multerMiddleware(), this.profilePhotoChangeController);
     }
     
     private profleInfoController = async (request: Request, response: Response) => {

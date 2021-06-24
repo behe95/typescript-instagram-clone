@@ -10,7 +10,7 @@ export default function errorMiddleware(error: HttpException, request: Request, 
 
     response
         .status(status)
-        .json({
+        .send({
             message,
             status
         });

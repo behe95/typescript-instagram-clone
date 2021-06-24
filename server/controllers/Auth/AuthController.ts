@@ -8,6 +8,7 @@ import validationMiddleware from "../../middlewares/validation.middleware";
 import RegisterUserDto from "./register.dto";
 import LoginUserDto from "./login.dto";
 import { createAccessToken, createRefreshToken } from "../../helpers/createToken";
+import authMiddleware from "../../middlewares/auth.middleware";
 
 export default class AuthController implements Controller {
     public path = "/api/auth";
@@ -19,8 +20,8 @@ export default class AuthController implements Controller {
     private initializeRoutes = () => {
         this.router.post(`${this.path}/register`, validationMiddleware(RegisterUserDto, false), this.registerController);
         this.router.post(`${this.path}/login`, validationMiddleware(LoginUserDto, false), this.loginController);
-        this.router.get(`${this.path}/check`, this.checkAuthController);
-        this.router.get(`${this.path}/logout`, this.logoutController);
+        this.router.get(`${this.path}/check`, authMiddleware, this.checkAuthController);
+        this.router.get(`${this.path}/logout`, authMiddleware, this.logoutController);
     }
 
     private registerController = async (request: Request, response: Response) => {

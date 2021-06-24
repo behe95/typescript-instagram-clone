@@ -14,15 +14,12 @@ const whiteListedRoutes: string[] = [
 ]
 
 export default async function authMiddleware(request:Request, response: Response, next: NextFunction) { 
-    console.log(request.path);
-       
-    
-    if(whiteListedRoutes.includes(request.path)) return next();
+    // if(whiteListedRoutes.includes(request.path)) return next();
     
     const {JWT__AUTH__TOKEN,JWT__REFRESH__TOKEN} = request.cookies;
     
 
-    // if(!JWT__AUTH__TOKEN || !JWT__REFRESH__TOKEN) return next(new AuthenticationTokenMissingException());
+    if(!JWT__AUTH__TOKEN || !JWT__REFRESH__TOKEN) return next(new AuthenticationTokenMissingException());
 
     try {
         const decodedAccessToken = await verifyAccessToken(JWT__AUTH__TOKEN);
