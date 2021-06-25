@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GET_ALL_PHOTOS = exports.UPLOAD_PHOTO = exports.CHANGE_PROFILE_PHOTO = exports.EDIT_PROFILE_INFO = exports.GET_PROFILE_INFO = exports.REGISTER = exports.LOGOUT = exports.LOGIN = void 0;
+var API_URL = "http://localhost:5000/";
+exports.LOGIN = "/api/auth/login";
+exports.LOGOUT = "/api/auth/logout";
+exports.REGISTER = "/api/auth/register";
+exports.GET_PROFILE_INFO = '/api/profile/info';
+exports.EDIT_PROFILE_INFO = "/api/profile/edit";
+exports.CHANGE_PROFILE_PHOTO = '/api/profile/changeProfilePhoto';
+exports.UPLOAD_PHOTO = '/api/profile/uploadPhoto';
+exports.GET_ALL_PHOTOS = '/api/profile/getAllPhotos';
