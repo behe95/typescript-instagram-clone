@@ -144,7 +144,6 @@ export const AuthProvider = ({children}:any) => {
                 localStorage.setItem("JWT__REFRESH__TOKEN", Cookie.get('JWT__REFRESH__TOKEN')!);
                 
                 setIsAuthenticated(b => true);
-                enqueueSnackbar('User logged in successfully',{variant: 'success'});
 
                 await dispatch(getProfileInfo());
                     
@@ -152,6 +151,9 @@ export const AuthProvider = ({children}:any) => {
 
                     
                 await dispatch(getAllPhotos())
+
+                enqueueSnackbar('User logged in successfully',{variant: 'success'});
+
                 
                 history.push('/home');
 
