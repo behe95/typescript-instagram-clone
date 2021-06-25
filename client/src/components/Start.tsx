@@ -129,7 +129,7 @@ export default function Start({history}:PropTypes){
     });
 
     React.useEffect(() => {
-        localStorage.removeItem("persist:root");
+        localStorage.clear();
     },[])
 
     const isMounted = React.useRef(true);

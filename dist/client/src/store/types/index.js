@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TOGGLOE_UPLOAD_LOADING = exports.SET_FILTER = exports.UPLOAD_PHOTO = exports.GET_ALL_PHOTOS = exports.PHOTO_CAPTION = exports.TOGGOLE_DONE_PHOTO_EDITING = exports.CLEAR_SET_EDITED_PHOTO = exports.SET_EDITED_PHOTO = exports.CLEAR__SELECT__UPLOAD__PHOTO = exports.SELECT__UPLOAD__PHOTO = exports.CHANGE_PROFILE_PHOTO = exports.EDIT_PROFILE_INFO = exports.GET_PROFILE_INFO = exports.LOGOUT = void 0;
+exports.CLEAR_ALL_AUTH = exports.TOGGLOE_UPLOAD_LOADING = exports.SET_FILTER = exports.UPLOAD_PHOTO = exports.GET_ALL_PHOTOS = exports.PHOTO_CAPTION = exports.TOGGOLE_DONE_PHOTO_EDITING = exports.CLEAR_SET_EDITED_PHOTO = exports.SET_EDITED_PHOTO = exports.CLEAR__SELECT__UPLOAD__PHOTO = exports.SELECT__UPLOAD__PHOTO = exports.CHANGE_PROFILE_PHOTO = exports.EDIT_PROFILE_INFO = exports.GET_PROFILE_INFO = exports.LOGOUT = void 0;
 exports.LOGOUT = "LOGOUT";
 exports.GET_PROFILE_INFO = "GET_PROFILE_INFO";
 exports.EDIT_PROFILE_INFO = "EDIT_PROFILE_INFO";
@@ -15,3 +15,4 @@ exports.GET_ALL_PHOTOS = "GET_ALL_PHOTOS";
 exports.UPLOAD_PHOTO = "UPLOAD_PHOTO";
 exports.SET_FILTER = "SET_FILTER";
 exports.TOGGLOE_UPLOAD_LOADING = "TOGGLOE_UPLOAD_LOADING";
+exports.CLEAR_ALL_AUTH = "CLEAR_ALL_AUTH";

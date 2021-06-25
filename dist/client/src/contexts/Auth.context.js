@@ -138,7 +138,7 @@ var AuthProvider = function (_a) {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
+                            _a.trys.push([0, 6, , 7]);
                             return [4 /*yield*/, checkAuth()];
                         case 1:
                             res = _a.sent();
@@ -146,19 +146,24 @@ var AuthProvider = function (_a) {
                                 setIsAuthenticated(true);
                                 setAuthContextIsLoading(false);
                             }
-                            if (!userProfileInfo) {
-                                dispatch(auth_1.getProfileInfo());
-                            }
-                            if (userProfilePhotos.length == 0) {
-                                dispatch(auth_1.getAllPhotos());
-                            }
-                            return [3 /*break*/, 3];
+                            if (!!userProfileInfo) return [3 /*break*/, 3];
+                            return [4 /*yield*/, dispatch(auth_1.getProfileInfo())];
                         case 2:
+                            _a.sent();
+                            _a.label = 3;
+                        case 3:
+                            if (!(userProfilePhotos.length == 0)) return [3 /*break*/, 5];
+                            return [4 /*yield*/, dispatch(auth_1.getAllPhotos())];
+                        case 4:
+                            _a.sent();
+                            _a.label = 5;
+                        case 5: return [3 /*break*/, 7];
+                        case 6:
                             error_2 = _a.sent();
                             console.log(error_2);
                             setAuthContextIsLoading(false);
-                            return [3 /*break*/, 3];
-                        case 3: return [2 /*return*/];
+                            return [3 /*break*/, 7];
+                        case 7: return [2 /*return*/];
                     }
                 });
             });
@@ -188,15 +193,26 @@ var AuthProvider = function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
                         axios_1.default
                             .post(API.LOGIN, __assign({}, data))
-                            .then(function (res) {
-                            localStorage.setItem("JWT__AUTH__TOKEN", js_cookie_1.default.get('JWT__AUTH__TOKEN'));
-                            localStorage.setItem("JWT__REFRESH__TOKEN", js_cookie_1.default.get('JWT__REFRESH__TOKEN'));
-                            setIsAuthenticated(function (b) { return true; });
-                            enqueueSnackbar('User logged in successfully', { variant: 'success' });
-                            dispatch(auth_1.getProfileInfo());
-                            history.push('/home');
-                            resolve();
-                        }).catch(function (err) {
+                            .then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        localStorage.setItem("JWT__AUTH__TOKEN", js_cookie_1.default.get('JWT__AUTH__TOKEN'));
+                                        localStorage.setItem("JWT__REFRESH__TOKEN", js_cookie_1.default.get('JWT__REFRESH__TOKEN'));
+                                        setIsAuthenticated(function (b) { return true; });
+                                        enqueueSnackbar('User logged in successfully', { variant: 'success' });
+                                        return [4 /*yield*/, dispatch(auth_1.getProfileInfo())];
+                                    case 1:
+                                        _a.sent();
+                                        return [4 /*yield*/, dispatch(auth_1.getAllPhotos())];
+                                    case 2:
+                                        _a.sent();
+                                        history.push('/home');
+                                        resolve();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }).catch(function (err) {
                             // const {data} = err.response;
                             // console.log(data);
                             var _a, _b;

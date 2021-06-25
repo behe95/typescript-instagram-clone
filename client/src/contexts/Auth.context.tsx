@@ -87,11 +87,14 @@ export const AuthProvider = ({children}:any) => {
                     }
 
                     if(!userProfileInfo){
-                        dispatch(getProfileInfo())
+                        await dispatch(getProfileInfo())
                     }
+                    
+                    
 
                     if((userProfilePhotos as Array<Object>).length == 0){
-                        dispatch(getAllPhotos())
+                        
+                        await dispatch(getAllPhotos())
                     }
 
 
@@ -134,7 +137,7 @@ export const AuthProvider = ({children}:any) => {
                 
             axios
             .post(API.LOGIN,{...data})
-            .then(res => {
+            .then(async (res) => {
                 
 
                 localStorage.setItem("JWT__AUTH__TOKEN", Cookie.get('JWT__AUTH__TOKEN')!);
@@ -143,7 +146,12 @@ export const AuthProvider = ({children}:any) => {
                 setIsAuthenticated(b => true);
                 enqueueSnackbar('User logged in successfully',{variant: 'success'});
 
-                dispatch(getProfileInfo());
+                await dispatch(getProfileInfo());
+                    
+                    
+
+                    
+                await dispatch(getAllPhotos())
                 
                 history.push('/home');
 

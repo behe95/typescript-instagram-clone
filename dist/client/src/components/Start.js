@@ -93,7 +93,7 @@ function Start(_a) {
         return false;
     }), showLogin = _b[0], setShowLogin = _b[1];
     react_1.default.useEffect(function () {
-        localStorage.removeItem("persist:root");
+        localStorage.clear();
     }, []);
     var isMounted = react_1.default.useRef(true);
     react_1.useCallback(function () {

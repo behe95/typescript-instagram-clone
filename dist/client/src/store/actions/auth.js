@@ -79,9 +79,12 @@ var logoutUser = function () { return function (dispatch) { return __awaiter(voi
             .get(API.LOGOUT, { withCredentials: true })
             .then(function (res) { })
             .catch(function (err) { return console.log(err); });
-        localStorage.removeItem('JWT__AUTH__TOKEN');
-        localStorage.removeItem('JWT__REFRESH__TOKEN');
-        localStorage.removeItem("persist:root");
+        // localStorage.removeItem('JWT__AUTH__TOKEN');
+        // localStorage.removeItem('JWT__REFRESH__TOKEN');
+        dispatch({
+            type: TYPES.CLEAR_ALL_AUTH
+        });
+        localStorage.clear();
         dispatch({
             type: TYPES.LOGOUT
         });
@@ -93,19 +96,21 @@ var logoutUser = function () { return function (dispatch) { return __awaiter(voi
 exports.logoutUser = logoutUser;
 var getProfileInfo = function () { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        axios_1.default
-            .get(API.GET_PROFILE_INFO, { withCredentials: true })
-            .then(function (res) {
-            var data = res.data;
-            console.log(data);
-            dispatch({
-                type: TYPES.GET_PROFILE_INFO,
-                payload: __assign({}, data)
-            });
-        }).catch(function (err) {
-            console.log(err);
-        });
-        return [2 /*return*/];
+        return [2 /*return*/, new Promise(function (resolve, reject) {
+                axios_1.default
+                    .get(API.GET_PROFILE_INFO, { withCredentials: true })
+                    .then(function (res) {
+                    var data = res.data;
+                    console.log(data);
+                    dispatch({
+                        type: TYPES.GET_PROFILE_INFO,
+                        payload: __assign({}, data)
+                    });
+                    resolve();
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            })];
     });
 }); }; };
 exports.getProfileInfo = getProfileInfo;
@@ -182,13 +187,18 @@ var uploadPhoto = function (formData) { return function (dispatch) { return __aw
     });
 }); }; };
 exports.uploadPhoto = uploadPhoto;
-var getAllPhotos = function () { return function (dispatch) {
-    axios_1.default.get(API.GET_ALL_PHOTOS, { withCredentials: true }).then(function (res) {
-        var photos = res.data.photos;
-        dispatch({
-            type: TYPES.GET_ALL_PHOTOS,
-            payload: photos
-        });
-    }).catch(function (err) { return console.log(err); });
-}; };
+var getAllPhotos = function () { return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, new Promise(function (resolve, reject) {
+                axios_1.default.get(API.GET_ALL_PHOTOS, { withCredentials: true }).then(function (res) {
+                    var photos = res.data.photos;
+                    dispatch({
+                        type: TYPES.GET_ALL_PHOTOS,
+                        payload: photos
+                    });
+                    resolve();
+                }).catch(function (err) { return console.log(err); });
+            })];
+    });
+}); }; };
 exports.getAllPhotos = getAllPhotos;

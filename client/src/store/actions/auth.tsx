@@ -13,9 +13,12 @@ export const logoutUser = () =>  async (dispatch: any) => {
         .then(res => {})
         .catch(err => console.log(err));
     
-    localStorage.removeItem('JWT__AUTH__TOKEN');
-    localStorage.removeItem('JWT__REFRESH__TOKEN');
-    localStorage.removeItem("persist:root");
+    // localStorage.removeItem('JWT__AUTH__TOKEN');
+    // localStorage.removeItem('JWT__REFRESH__TOKEN');
+    dispatch({
+        type: TYPES.CLEAR_ALL_AUTH
+    })
+    localStorage.clear();
 
 
     dispatch({
@@ -28,21 +31,28 @@ export const logoutUser = () =>  async (dispatch: any) => {
 
 }
 
-export const getProfileInfo = () => async (dispatch: any) => {
+export const getProfileInfo = ():ThunkAction<Promise<void>, {}, {}, AnyAction>=> async (dispatch:ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+
+    return new Promise((resolve, reject) => {
     
-    axios
-        .get(API.GET_PROFILE_INFO, {withCredentials: true})
-        .then(res => {
-            const {data} = res;
-            console.log(data);
-            
-            dispatch({
-                type: TYPES.GET_PROFILE_INFO,
-                payload: {...data}
+    
+        axios
+            .get(API.GET_PROFILE_INFO, {withCredentials: true})
+            .then(res => {
+                const {data} = res;
+                console.log(data);
+                
+                dispatch({
+                    type: TYPES.GET_PROFILE_INFO,
+                    payload: {...data}
+                })
+
+                resolve();
+            }).catch(err => {
+                console.log(err);            
             })
-        }).catch(err => {
-            console.log(err);            
-        })
+        
+    })
 }
 
 export const editProfileInfo = (formValues:any):ThunkAction<Promise<void>, {}, {}, AnyAction> => async (dispatch:ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -122,14 +132,21 @@ export const uploadPhoto = (formData: any): ThunkAction<Promise<void>, {}, {}, A
     })    
 }
 
-export const getAllPhotos = () => (dispatch: any) => {
-    axios.get(API.GET_ALL_PHOTOS, {withCredentials: true}).then(res => {
-        const {data:{photos}} = res;
+export const getAllPhotos = ():ThunkAction<Promise<void>, {}, {}, AnyAction>=> async (dispatch:ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+
+    return new Promise((resolve, reject) => {
+    
+        axios.get(API.GET_ALL_PHOTOS, {withCredentials: true}).then(res => {
+            const {data:{photos}} = res;
+            
+            dispatch({
+                type: TYPES.GET_ALL_PHOTOS,
+                payload: photos
+            })
+
+            resolve();
+            
+        }).catch(err => console.log(err))
         
-        dispatch({
-            type: TYPES.GET_ALL_PHOTOS,
-            payload: photos
-        })
-        
-    }).catch(err => console.log(err))
+    })
 }

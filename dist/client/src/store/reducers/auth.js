@@ -53,6 +53,8 @@ function auth(state, action) {
             return (__assign(__assign({}, state), { user: __assign(__assign({}, state.user), action.payload) }));
         case TYPES.GET_ALL_PHOTOS:
             return (__assign(__assign({}, state), { photos: __spreadArray([], action.payload) }));
+        case TYPES.CLEAR_ALL_AUTH:
+            return initialState;
         case TYPES.UPLOAD_PHOTO:
             return (__assign(__assign({}, state), { photos: __spreadArray(__spreadArray([], state.photos), [action.payload]) }));
         default:

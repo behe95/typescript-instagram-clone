@@ -32,6 +32,8 @@ export default function auth(state=initialState, action:any){
                 ...state,
                 photos: [...action.payload]
             })
+        case TYPES.CLEAR_ALL_AUTH:
+            return initialState;
         case TYPES.UPLOAD_PHOTO:
             return ({
                 ...state,
