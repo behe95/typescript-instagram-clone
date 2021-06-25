@@ -11,6 +11,61 @@ export async function dataUrlToFile(dataUrl: string, fileName: string): Promise<
     return new File([blob], fileName, { type: 'image/png' });
 }
 
+function getImage(dataUrl: string): Promise<HTMLImageElement> 
+{
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = dataUrl;
+        image.onload = () => {
+            resolve(image);
+        };
+        // image.onerror = (el: any, err: ErrorEvent) => {
+        //     reject(err.error);
+        // };
+    });
+}
+
+async function downscaleImage(
+    dataUrl: string,  
+    imageType: string,
+    resolution: number,
+    quality: number
+): Promise<string> {
+
+    const image = await getImage(dataUrl);
+    const oldWidth = image.naturalWidth;
+    const oldHeight = image.naturalHeight;
+    console.log('dims', oldWidth, oldHeight);
+
+    const longestDimension = oldWidth > oldHeight ? 'width' : 'height';
+    const currentRes = longestDimension == 'width' ? oldWidth : oldHeight;
+    console.log('longest dim', longestDimension, currentRes);
+
+    if (currentRes > resolution) {
+        console.log('need to resize...');
+
+        const newSize = longestDimension == 'width'
+            ? Math.floor(oldHeight / oldWidth * resolution)
+            : Math.floor(oldWidth / oldHeight * resolution);
+        const newWidth = longestDimension == 'width' ? resolution : newSize;
+        const newHeight = longestDimension == 'height' ? resolution : newSize;
+        console.log('new width / height', newWidth, newHeight);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(image, 0, 0, newWidth, newHeight);
+        const newDataUrl = canvas.toDataURL(imageType, quality);
+        return newDataUrl;
+    }
+    else {
+        return dataUrl;
+    }
+
+}
+
 
 export default React.memo(function EditPhoto({editValues}:any){
 
@@ -30,6 +85,7 @@ export default React.memo(function EditPhoto({editValues}:any){
     const history = useHistory();
 
     const dispatch = useDispatch();
+    
 
     
     
@@ -46,15 +102,19 @@ export default React.memo(function EditPhoto({editValues}:any){
     },[])
 
     React.useEffect(() => {
-        if(imageLoaded){
-            // if(!photoProcessingLoading) setPhotoProcessingLoading(true);
-            let dataUrl = canvasRef.current.toDataURL();
-            dispatch(photoUpload(dataUrl));
-            // dispatch(setEditedPhoto(dataUrl));
-        }
+        (async function () {
+            if(imageLoaded){
+                // if(!photoProcessingLoading) setPhotoProcessingLoading(true);
+                let dataUrl = canvasRef.current.toDataURL();
+                dataUrl = await downscaleImage(dataUrl, 'image/png', 480, 0.9);
+                dispatch(photoUpload(dataUrl));
+                // dispatch(setEditedPhoto(dataUrl));
+            }
+        })()
         
     },[donePhotoEditing])
 
+    console.log(canvasRef);
     
 
     React.useEffect(() => {
@@ -82,49 +142,55 @@ export default React.memo(function EditPhoto({editValues}:any){
             
         // })
 
-
-        reader.addEventListener('load', () => {
-        if(!imageLoaded) setImageLoaded(b => true);
-          const ctx = canvasRef.current.getContext('2d');
-          img.src = reader.result as string;
-          img.onload = function(){
-              const measure = document.getElementById('measure');
-              measure?.appendChild(img);
-
-              let wrh = img.width / img.height;
-              let newWidth = canvasRef.current.width;
-              let newHeight = newWidth / wrh;
-              if (newHeight > canvasRef.current.height) {
-                  newHeight = canvasRef.current.height;
-                  newWidth = newHeight * wrh;
+        const draw = () => {
+            if(!imageLoaded) setImageLoaded(b => true);
+              const ctx = canvasRef.current.getContext('2d');
+              img.src = reader.result as string;
+              img.onload = function(){
+                  const measure = document.getElementById('measure');
+                  measure?.appendChild(img);
+    
+                  let wrh = img.width / img.height;
+                  let newWidth = canvasRef.current.width;
+                  let newHeight = newWidth / wrh;
+                  if (newHeight > canvasRef.current.height) {
+                      newHeight = canvasRef.current.height;
+                      newWidth = newHeight * wrh;
+                  }
+    
+                  const xOffset = newWidth < canvasRef.current.width ? ((canvasRef.current.width - newWidth) / 2) : 0;
+                  const yOffset = newHeight < canvasRef.current.height ? ((canvasRef.current.height - newHeight) / 2) : 0;
+                  if(selectedPhotoFilter){
+                    ctx!.filter = `brightness(${editValues.brightness}%) contrast(${editValues.contrast}%) saturate(${editValues.saturation}%) ${selectedPhotoFilter}`
+    
+                  }else{
+                    ctx!.filter = `brightness(${editValues.brightness}%) contrast(${editValues.contrast}%) saturate(${editValues.saturation}%)`
+    
+                  }
+                  console.log(selectedPhotoFilter);
+                  
+                  ctx?.drawImage(img, xOffset, yOffset, newWidth , newHeight);
+    
               }
-
-              const xOffset = newWidth < canvasRef.current.width ? ((canvasRef.current.width - newWidth) / 2) : 0;
-              const yOffset = newHeight < canvasRef.current.height ? ((canvasRef.current.height - newHeight) / 2) : 0;
-              if(selectedPhotoFilter){
-                ctx!.filter = `brightness(${editValues.brightness}%) contrast(${editValues.contrast}%) saturate(${editValues.saturation}%) ${selectedPhotoFilter}`
-
-              }else{
-                ctx!.filter = `brightness(${editValues.brightness}%) contrast(${editValues.contrast}%) saturate(${editValues.saturation}%)`
-
-              }
-              console.log(selectedPhotoFilter);
+    
+            //   canvasRef.current.toBlob(function(blob){
+            //       // setEditedPhoto(blob as Blob);
+            //       dispatch(setEditedPhoto(blob))
+                  
+            //   }, 'image/jpeg', 1)
+    
+            
+    
               
-              ctx?.drawImage(img, xOffset, yOffset, newWidth , newHeight);
-
           }
 
-        //   canvasRef.current.toBlob(function(blob){
-        //       // setEditedPhoto(blob as Blob);
-        //       dispatch(setEditedPhoto(blob))
-              
-        //   }, 'image/jpeg', 1)
 
-        
-
-          
-      })
+        reader.addEventListener('load', draw)
         // console.log(editedPhoto);
+
+        return ():void => {
+            reader.removeEventListener("load",draw)
+        }
         
     },[editValues,photoFile,selectedPhotoFilter])
 

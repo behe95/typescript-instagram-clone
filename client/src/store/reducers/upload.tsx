@@ -5,7 +5,8 @@ let initialState = {
     editedPhoto: null,
     donePhotoEditing: false,
     caption: "",
-    filter: null
+    filter: null,
+    uploadLoading: false
 }
 
 export default function upload(state=initialState, action:any){
@@ -46,6 +47,11 @@ export default function upload(state=initialState, action:any){
             return ({
                 ...state,
                 filter: action.payload
+            })
+        case TYPES.TOGGLOE_UPLOAD_LOADING:
+            return ({
+                ...state,
+                uploadLoading: !state.uploadLoading
             })
         default:
             return state;

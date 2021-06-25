@@ -128,6 +128,10 @@ export default function Start({history}:PropTypes){
         return false
     });
 
+    React.useEffect(() => {
+        localStorage.removeItem("persist:root");
+    },[])
+
     const isMounted = React.useRef(true);
     useCallback(() => {
         history.replace({

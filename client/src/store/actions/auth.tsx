@@ -15,6 +15,8 @@ export const logoutUser = () =>  async (dispatch: any) => {
     
     localStorage.removeItem('JWT__AUTH__TOKEN');
     localStorage.removeItem('JWT__REFRESH__TOKEN');
+    localStorage.removeItem("persist:root");
+
 
     dispatch({
         type: TYPES.LOGOUT
@@ -100,12 +102,20 @@ export const uploadPhoto = (formData: any): ThunkAction<Promise<void>, {}, {}, A
             .then(res => {
                 const {data:{data:uploadedPhotoInfo}} = res;
                 console.log("===========================",uploadedPhotoInfo);
+                dispatch({
+                    type: TYPES.TOGGLOE_UPLOAD_LOADING
+                })
+
+                dispatch({
+                    type: TYPES.CLEAR__SELECT__UPLOAD__PHOTO
+                })
                 
                 dispatch({
                     type: TYPES.UPLOAD_PHOTO,
                     payload: uploadedPhotoInfo
                 })
                 
+                resolve();
             }).catch(err => {
                 console.log(err);                
             })

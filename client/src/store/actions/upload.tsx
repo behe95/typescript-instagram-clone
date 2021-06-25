@@ -81,3 +81,9 @@ export const setFilter = (filter: string) => (dispatch:any) => {
         payload: filter
     })
 }
+
+export const toggleUploadLoading = () => (dispatch: any) => {
+    dispatch({
+        type: TYPES.TOGGLOE_UPLOAD_LOADING
+    })
+}

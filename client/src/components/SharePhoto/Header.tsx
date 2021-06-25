@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadPhoto } from "../../store/actions/auth";
-import { clearPhotoUpload, toggleDonePhotoEditing } from "../../store/actions/upload";
+import { clearPhotoUpload, toggleDonePhotoEditing, toggleUploadLoading } from "../../store/actions/upload";
 import { RootState } from "../../store/reducers";
 
 export async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
@@ -26,9 +26,14 @@ export default function Header(){
         formData.append('file', file);
         formData.append('caption', caption);
         
-        
+        dispatch(toggleUploadLoading());
 
         await dispatch(uploadPhoto(formData));
+
+        history.push("/home");
+
+        // dispatch(toggleUploadLoading());
+
         
     }
 

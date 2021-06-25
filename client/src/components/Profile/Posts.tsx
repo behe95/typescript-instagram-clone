@@ -69,7 +69,7 @@ export default function Posts() {
         <div className="profile__posts__container">
             <div className="row no-gutters">
             {
-                (userProfilePhotos as Array<Object>).map((d:any,key:number) => (
+                (userProfilePhotos as NonNullable<Array<Object>>).map((d:any,key:number) => (
                     <Post number={key} key={key} src={d.url} />
                 ))
             }
