@@ -77,13 +77,19 @@ export default function Login() {
 
         setIsLoginLoading(true);
 
+        try {
+
         
-        if(!validateNumber(user) && !validateEmail(user)){
-            await login({...data, loginUsing:"username"});
-        }else if(validateNumber(user)){
-            await login({...data, loginUsing:"phone"});
-        }else if(validateEmail(user)){
-            await login({...data, loginUsing:"email"});
+            if(!validateNumber(user) && !validateEmail(user)){
+                await login({...data, loginUsing:"username"});
+            }else if(validateNumber(user)){
+                await login({...data, loginUsing:"phone"});
+            }else if(validateEmail(user)){
+                await login({...data, loginUsing:"email"});
+            }
+            
+        } catch (error) {
+            setIsLoginLoading(false)
         }
       
         

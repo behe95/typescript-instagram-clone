@@ -6,7 +6,7 @@ import * as API from '../api'
 import {useSnackbar} from 'notistack';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/reducers";
-import { getProfileInfo } from "../store/actions/auth";
+import { getAllPhotos, getProfileInfo } from "../store/actions/auth";
 
 
 interface userInfoType{
@@ -64,7 +64,7 @@ export const AuthProvider = ({children}:any) => {
 
     const history = useHistory();
 
-    const {user:userProfileInfo} = useSelector((state:RootState) => state.auth)
+    const {user:userProfileInfo, photos:userProfilePhotos} = useSelector((state:RootState) => state.auth)
     const dispatch = useDispatch();
 
     React.useEffect(() => {
@@ -89,6 +89,11 @@ export const AuthProvider = ({children}:any) => {
                     if(!userProfileInfo){
                         dispatch(getProfileInfo())
                     }
+
+                    if((userProfilePhotos as Array<Object>).length == 0){
+                        dispatch(getAllPhotos())
+                    }
+
 
                 } catch (error) {
                     console.log(error);
@@ -125,6 +130,8 @@ export const AuthProvider = ({children}:any) => {
     
     const login = async ({...data}) => {
         if(isMounted.current){
+            return new Promise<void>((resolve, reject) => {
+                
             axios
             .post(API.LOGIN,{...data})
             .then(res => {
@@ -140,7 +147,7 @@ export const AuthProvider = ({children}:any) => {
                 
                 history.push('/home');
 
-                
+                resolve();
 
             }).catch(err => {
                 // const {data} = err.response;
@@ -153,8 +160,11 @@ export const AuthProvider = ({children}:any) => {
 
                 }
                 
+                reject(err);
                 
             })
+            })
+            
         }        
     }
 

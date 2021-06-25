@@ -90,3 +90,36 @@ export const changeProfilePhoto = (formData: any): ThunkAction<Promise<void>, {}
 
     })
 }
+
+export const uploadPhoto = (formData: any): ThunkAction<Promise<void>, {}, {}, AnyAction> => async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(API.UPLOAD_PHOTO, formData, {withCredentials:true,headers: {
+                "Contetnt-Type":"multipart/form-data" 
+            }})
+            .then(res => {
+                const {data:{data:uploadedPhotoInfo}} = res;
+                console.log("===========================",uploadedPhotoInfo);
+                
+                dispatch({
+                    type: TYPES.UPLOAD_PHOTO,
+                    payload: uploadedPhotoInfo
+                })
+                
+            }).catch(err => {
+                console.log(err);                
+            })
+    })    
+}
+
+export const getAllPhotos = () => (dispatch: any) => {
+    axios.get(API.GET_ALL_PHOTOS, {withCredentials: true}).then(res => {
+        const {data:{photos}} = res;
+        
+        dispatch({
+            type: TYPES.GET_ALL_PHOTOS,
+            payload: photos
+        })
+        
+    }).catch(err => console.log(err))
+}

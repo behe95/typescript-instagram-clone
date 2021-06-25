@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/reducers";
 
 
 const data = [
@@ -61,12 +63,14 @@ export function Post(props: PropPost) {
 }
 
 export default function Posts() {
+    const {photos:userProfilePhotos} = useSelector((state:RootState) => state.auth);
+
     return (
         <div className="profile__posts__container">
             <div className="row no-gutters">
             {
-                data.map((d,key) => (
-                    <Post number={key} key={key} src={d.img} />
+                (userProfilePhotos as Array<Object>).map((d:any,key:number) => (
+                    <Post number={key} key={key} src={d.url} />
                 ))
             }
             </div>

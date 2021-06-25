@@ -1,19 +1,39 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { clearPhotoUpload } from "../../store/actions/upload";
+import { uploadPhoto } from "../../store/actions/auth";
+import { clearPhotoUpload, toggleDonePhotoEditing } from "../../store/actions/upload";
+import { RootState } from "../../store/reducers";
 
+export async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
+
+    const res: Response = await fetch(dataUrl);
+    const blob: Blob = await res.blob();
+    return new File([blob], fileName, { type: 'image/png' });
+}
 
 export default function Header(){
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const {caption,selectedPhotoUpload} = useSelector((state:RootState) => state.upload);
 
-    const onClickNextButtonHandler = () => {
+    const onClickNextButtonHandler = async () => {
+
+        const file = await dataUrlToFile(selectedPhotoUpload, "image");
+        console.log(caption, file);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('caption', caption);
+        
+        
+
+        await dispatch(uploadPhoto(formData));
         
     }
 
-    const onClickCloseButtonHandler = () => {
+    const onClickCloseButtonHandler = async () => {
+        await dispatch(toggleDonePhotoEditing());
         history.goBack();
     }
 

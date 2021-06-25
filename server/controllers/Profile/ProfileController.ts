@@ -27,6 +27,8 @@ class ProfileController implements Controller {
         this.router.get(`${this.path}/info`, authMiddleware, this.profleInfoController);
         this.router.post(`${this.path}/edit`, authMiddleware,   this.profileEditController);
         this.router.post(`${this.path}/changeProfilePhoto`, authMiddleware,   multerMiddleware(), this.profilePhotoChangeController);
+        this.router.post(`${this.path}/uploadPhoto`, authMiddleware,   multerMiddleware(), this.uploadPhotoController);
+        this.router.get(`${this.path}/getAllPhotos`, authMiddleware, this.getAllPhotosController);
     }
     
     private profleInfoController = async (request: Request, response: Response) => {
@@ -136,6 +138,69 @@ class ProfileController implements Controller {
         })
         
         
+    }
+
+    private uploadPhotoController = async(request: Request, respone: Response) => {
+        const firestore = request.firestore;
+        
+        const bucket = request.storage.bucket(process.env.CLOUD__STORAGE__BUCKET__NAME);
+        const file = request.file;
+        const {caption} = request.body;
+
+        const userId = request.user._id;
+
+        uploadImageToStorage(file, bucket).then(async (uploadedImageInfo:any) => {
+            const docRef = firestore.collection('photos').doc(); 
+
+            const defaultData = {                
+                _id: docRef.id,
+                userId
+            }
+            const data = await docRef.set({
+                ...uploadedImageInfo,
+                ...defaultData
+            });
+
+            console.log("SAVED ================= ",data);
+            
+
+            respone.status(200).send({
+                status: 200,
+                message: "Image uploaded successfully",
+                data: {
+                    ...defaultData,
+                    ...uploadedImageInfo
+                }
+            })
+        }).catch(err => {
+            console.log(err);
+            
+        })
+        
+    }
+
+    private getAllPhotosController = async (request: Request, response: Response) => {
+        const firestore = request.firestore;
+        let photos: any[] = [];
+        
+        try {
+            const photosSnapshot = await firestore.collection('photos').where("userId","==",request.user._id).get();
+            // const userData = userSnapshot.data();
+            // delete userData.password;
+            // delete userData.refreshToken;
+
+            if(photosSnapshot.docs.length > 0){
+                photosSnapshot.forEach((snapshot:any) => {
+                    photos.push(snapshot.data());                    
+                });
+            }
+            
+            
+            response.status(200).send({photos});
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
 }
 

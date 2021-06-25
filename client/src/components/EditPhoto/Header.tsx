@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { clearPhotoUpload } from "../../store/actions/upload";
+import { clearPhotoUpload, toggleDonePhotoEditing } from "../../store/actions/upload";
 
 
 export default React.memo(function Header(){
@@ -9,7 +9,8 @@ export default React.memo(function Header(){
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const onClickNextButtonHandler = () => {
+    const onClickNextButtonHandler = async () => {
+        await dispatch(toggleDonePhotoEditing());
         history.push('/create/details')
     }
 

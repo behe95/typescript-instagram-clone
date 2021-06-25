@@ -1,7 +1,10 @@
 import React from 'react'
 
 const initEditValues = {
-    brightness: 100
+    brightness: 100,
+    contrast: 100,
+    // warmth: 100,
+    saturation: 100,
 }
 
 export default function useEdit() {
@@ -13,7 +16,7 @@ export default function useEdit() {
     const onEditSliderChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         setEditValues({
             ...editValues,
-            [e.target.name]: e.target.value
+            [e.target.name]: parseInt(e.target.value)
         })
     }
 
